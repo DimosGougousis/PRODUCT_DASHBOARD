@@ -3,41 +3,46 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import * as sonarClient from '@/integrations/sonarqube/client';
-import type { QualityMetrics } from '@/integrations/sonarqube/types';
+
+export interface QualityMetrics {
+  testCoverage: number;
+  bugs: number;
+  vulnerabilities: number;
+  technicalDebt: string;
+  technicalDebtRatio: number;
+  reliabilityRating: number;
+  securityRating: number;
+  maintainabilityRating: number;
+  qualityGateStatus: string;
+}
 
 interface UseQualityMetricsOptions {
-  projectKey: string | null;
+  projectKey?: string | null;
   useMock?: boolean;
 }
 
-// Generate mock quality data for demonstration
-function generateMockQualityData(): QualityMetrics {
-  // Generate realistic coverage trend (fluctuating between 75-85%)
-  const coverageTrend = [78, 80, 79, 82, 81];
-  const bugsTrend = [12, 10, 11, 9, 8];
-
+// Generate project-specific mock quality data
+function generateMockQualityData(projectKey: string = 'demo-project'): QualityMetrics {
+  // Project-specific quality profiles
+  const projectConfigs: Record<string, { coverage: number; bugs: number; vulns: number; debt: string; debtRatio: number; rel: number; sec: number; maint: number }> = {
+    'demo-project': { coverage: 81.5, bugs: 8, vulns: 3, debt: '2d 4h', debtRatio: 4.2, rel: 3, sec: 2, maint: 3 },
+    'payment-service': { coverage: 92.3, bugs: 2, vulns: 0, debt: '8h', debtRatio: 1.2, rel: 2, sec: 1, maint: 2 },
+    'auth-service': { coverage: 88.7, bugs: 4, vulns: 1, debt: '1d 2h', debtRatio: 2.1, rel: 2, sec: 2, maint: 2 },
+    'legacy-api': { coverage: 62.4, bugs: 24, vulns: 8, debt: '5d 6h', debtRatio: 12.5, rel: 4, sec: 3, maint: 4 },
+  };
+  
+  const config = projectConfigs[projectKey] || projectConfigs['demo-project'];
+  
   return {
-    testCoverage: 81.5,
-    lineCoverage: 83.2,
-    branchCoverage: 76.8,
-    bugs: 8,
-    codeSmells: 45,
-    vulnerabilities: 3,
-    blockerIssues: 0,
-    criticalIssues: 2,
-    majorIssues: 15,
-    minorIssues: 28,
-    infoIssues: 11,
-    technicalDebt: '2d 4h',
-    technicalDebtRatio: 4.2,
-    duplicatedLinesDensity: 2.1,
-    reliabilityRating: 3, // C
-    securityRating: 2, // B
-    maintainabilityRating: 3, // C
-    qualityGateStatus: 'warning',
-    coverageTrend,
-    bugsTrend,
+    testCoverage: config.coverage,
+    bugs: config.bugs,
+    vulnerabilities: config.vulns,
+    technicalDebt: config.debt,
+    technicalDebtRatio: config.debtRatio,
+    reliabilityRating: config.rel,
+    securityRating: config.sec,
+    maintainabilityRating: config.maint,
+    qualityGateStatus: config.coverage >= 80 && config.vulns === 0 ? 'passed' : 'warning',
   };
 }
 

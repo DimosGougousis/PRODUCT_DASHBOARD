@@ -37,33 +37,40 @@ interface UseCustomerMetricsOptions {
   useMock?: boolean;
 }
 
-// Generate mock customer data for demonstration
-function generateMockCustomerData(): CustomerMetrics {
-  const totalResponses = 200;
-  const promoters = 62; // 125/200 = 62%
-  const passives = 23; // 45/200 = 22%
-  const detractors = 15; // 30/200 = 15%
-  const npsScore = promoters - detractors; // 47
+// Generate project-specific mock customer data
+function generateMockCustomerData(productId: string = 'default'): CustomerMetrics {
+  // Project-specific customer profiles
+  const projectConfigs: Record<string, { nps: number; csat: number; tickets: number; highPrio: number; resolution: number }> = {
+    'default': { nps: 47, csat: 4.4, tickets: 12, highPrio: 3, resolution: 18.5 },
+    'payment': { nps: 62, csat: 4.7, tickets: 8, highPrio: 1, resolution: 12.0 },
+    'auth': { nps: 38, csat: 3.9, tickets: 18, highPrio: 5, resolution: 24.5 },
+    'dashboard': { nps: 55, csat: 4.5, tickets: 6, highPrio: 0, resolution: 8.5 },
+  };
+  
+  const config = projectConfigs[productId] || projectConfigs['default'];
+  const promoters = Math.round((config.nps + 100) / 2 * 0.62);
+  const passives = Math.round((config.nps + 100) / 2 * 0.23);
+  const detractors = Math.round((config.nps + 100) / 2 * 0.15);
   
   return {
     nps: {
-      score: npsScore,
+      score: config.nps,
       promoters,
       passives,
       detractors,
-      promotersCount: 125,
-      passivesCount: 45,
-      detractorsCount: 30,
-      trend: 'up',
+      promotersCount: Math.round(promoters * 2),
+      passivesCount: Math.round(passives * 2),
+      detractorsCount: Math.round(detractors * 2),
+      trend: config.nps > 50 ? 'up' : config.nps > 30 ? 'stable' : 'down',
     },
     csat: {
-      score: 4.4, // Out of 5
+      score: config.csat,
       responseRate: 87,
     },
     supportTickets: {
-      total: 12,
-      highPriority: 3,
-      avgResolutionTime: 18.5,
+      total: config.tickets,
+      highPriority: config.highPrio,
+      avgResolutionTime: config.resolution,
     },
   };
 }

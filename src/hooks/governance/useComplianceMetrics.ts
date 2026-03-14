@@ -49,58 +49,78 @@ interface UseComplianceMetricsOptions {
   useMock?: boolean;
 }
 
-// Generate mock compliance data for demonstration
-function generateMockComplianceData(): ComplianceMetrics {
-  return {
-    overallScore: 85,
-    securityFindings: {
-      open: 8,
-      critical: 1,
-      high: 2,
-      medium: 3,
-      low: 2,
+// Generate project-specific mock compliance data
+function generateMockComplianceData(productId: string = 'default'): ComplianceMetrics {
+  // Project-specific compliance profiles
+  const projectConfigs: Record<string, { 
+    score: number; 
+    findings: { open: number; critical: number; high: number; medium: number; low: number };
+    frameworks: { name: string; status: 'compliant' | 'partial' | 'non_compliant'; score: number }[];
+  }> = {
+    'default': { 
+      score: 85, 
+      findings: { open: 8, critical: 1, high: 2, medium: 3, low: 2 },
+      frameworks: [
+        { name: 'GDPR', status: 'compliant', score: 92 },
+        { name: 'SOC 2 Type II', status: 'compliant', score: 88 },
+        { name: 'ISO 27001', status: 'partial', score: 75 },
+      ]
     },
+    'payment': { 
+      score: 94, 
+      findings: { open: 3, critical: 0, high: 1, medium: 1, low: 1 },
+      frameworks: [
+        { name: 'GDPR', status: 'compliant', score: 96 },
+        { name: 'SOC 2 Type II', status: 'compliant', score: 94 },
+        { name: 'ISO 27001', status: 'compliant', score: 92 },
+        { name: 'PCI DSS', status: 'compliant', score: 95 },
+      ]
+    },
+    'auth': { 
+      score: 88, 
+      findings: { open: 6, critical: 0, high: 2, medium: 3, low: 1 },
+      frameworks: [
+        { name: 'GDPR', status: 'compliant', score: 90 },
+        { name: 'SOC 2 Type II', status: 'compliant', score: 88 },
+        { name: 'ISO 27001', status: 'partial', score: 82 },
+        { name: 'NIST CSF', status: 'partial', score: 85 },
+      ]
+    },
+    'dashboard': { 
+      score: 78, 
+      findings: { open: 12, critical: 2, high: 3, medium: 4, low: 3 },
+      frameworks: [
+        { name: 'GDPR', status: 'partial', score: 82 },
+        { name: 'SOC 2 Type II', status: 'partial', score: 75 },
+        { name: 'ISO 27001', status: 'non_compliant', score: 68 },
+      ]
+    },
+  };
+  
+  const config = projectConfigs[productId] || projectConfigs['default'];
+  
+  return {
+    overallScore: config.score,
+    securityFindings: config.findings,
     dataPrivacy: {
       dataSubjectRequests: {
-        pending: 2,
+        pending: productId === 'payment' ? 0 : productId === 'auth' ? 1 : 2,
       },
     },
     auditStatus: {
-      daysSinceLastAudit: 45,
-      nextAuditDate: '2026-06-01',
+      daysSinceLastAudit: productId === 'payment' ? 15 : productId === 'auth' ? 30 : 45,
+      nextAuditDate: productId === 'payment' ? '2026-09-01' : productId === 'auth' ? '2026-07-15' : '2026-06-01',
     },
-    frameworks: [
-      {
-        name: 'GDPR',
-        status: 'compliant',
-        score: 92,
-        controlsPassed: 45,
-        controlsTotal: 48,
-        lastAssessment: '2026-01-15',
-        nextReview: '2026-07-15',
-        findings: 1,
-      },
-      {
-        name: 'SOC 2 Type II',
-        status: 'compliant',
-        score: 88,
-        controlsPassed: 38,
-        controlsTotal: 42,
-        lastAssessment: '2025-12-01',
-        nextReview: '2026-06-01',
-        findings: 2,
-      },
-      {
-        name: 'ISO 27001',
-        status: 'partial',
-        score: 75,
-        controlsPassed: 65,
-        controlsTotal: 85,
-        lastAssessment: '2026-02-01',
-        nextReview: '2026-09-01',
-        findings: 5,
-      },
-    ],
+    frameworks: config.frameworks.map(fw => ({
+      name: fw.name,
+      status: fw.status,
+      score: fw.score,
+      controlsPassed: Math.floor(fw.score * 0.9),
+      controlsTotal: 100,
+      lastAssessment: '2026-01-15',
+      nextReview: '2026-07-15',
+      findings: fw.status === 'compliant' ? 1 : fw.status === 'partial' ? 3 : 6,
+    })),
   };
 }
 
@@ -118,7 +138,7 @@ export function useComplianceMetrics({
     queryKey: ['governance', 'compliance', productId, useMock],
     queryFn: () => {
       if (useMock) {
-        return Promise.resolve(generateMockComplianceData());
+        return Promise.resolve(generateMockComplianceData(productId || 'default'));
       }
       return fetchComplianceMetrics(productId!);
     },

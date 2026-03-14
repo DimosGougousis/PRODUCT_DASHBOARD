@@ -63,21 +63,30 @@ interface UseDeliveryMetricsOptions {
   useMock?: boolean; // Enable mock data for demo
 }
 
-// Generate mock data for demonstration
-function generateMockData(sprintCount: number): DeliveryMetrics {
+// Generate project-specific mock data
+function generateMockData(sprintCount: number, projectKey: string = 'PROJ'): DeliveryMetrics {
   const today = new Date();
   const sprintLength = 14; // days
+  
+  // Project-specific configurations
+  const projectConfigs: Record<string, { baseVelocity: number; sprintGoal: string; leadTime: number }> = {
+    'PROJ': { baseVelocity: 45, sprintGoal: 'Complete user authentication flow and payment integration', leadTime: 8 },
+    'PAY': { baseVelocity: 38, sprintGoal: 'Implement PCI-compliant payment processing', leadTime: 6 },
+    'AUTH': { baseVelocity: 42, sprintGoal: 'Deploy OAuth2 SSO integration', leadTime: 7 },
+    'DASH': { baseVelocity: 52, sprintGoal: 'Release new analytics dashboard v2', leadTime: 5 },
+  };
+  
+  const config = projectConfigs[projectKey] || projectConfigs['PROJ'];
   
   // Generate velocity trend (last N sprints)
   const sprints: SprintVelocityItem[] = Array.from({ length: sprintCount }, (_, i) => {
     const sprintDate = new Date(today);
     sprintDate.setDate(sprintDate.getDate() - (i + 1) * sprintLength);
     
-    // Simulate some variance in velocity
-    const baseVelocity = 45;
+    // Simulate some variance in velocity based on project
     const variance = Math.floor(Math.random() * 20) - 10;
-    const committed = baseVelocity + Math.floor(Math.random() * 15);
-    const completed = Math.max(0, Math.min(committed, baseVelocity + variance));
+    const committed = config.baseVelocity + Math.floor(Math.random() * 15);
+    const completed = Math.max(0, Math.min(committed, config.baseVelocity + variance));
     
     return {
       name: `Sprint ${25 - i}`,
@@ -101,10 +110,10 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
   const sprintEnd = new Date(sprintStart);
   sprintEnd.setDate(sprintEnd.getDate() + sprintLength);
   
-  const totalPoints = 50;
+  const totalPoints = Math.round(config.baseVelocity * 1.1);
   const daysElapsed = 5;
   const daysRemaining = sprintLength - daysElapsed;
-  const completedPoints = 30; // 60% done
+  const completedPoints = Math.round(totalPoints * 0.6); // 60% done
   const remainingPoints = totalPoints - completedPoints;
   
   const burndown: BurndownPoint[] = Array.from({ length: daysElapsed + 1 }, (_, i) => {
@@ -143,12 +152,12 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
         total: totalPoints,
         remaining: remainingPoints,
       },
-      goal: 'Complete user authentication flow and payment integration',
+      goal: config.sprintGoal,
       startDate: sprintStart.toISOString(),
       endDate: sprintEnd.toISOString(),
     },
-    leadTimeDays: 8,
-    cycleTimeDays: 5,
+    leadTimeDays: config.leadTime,
+    cycleTimeDays: Math.round(config.leadTime * 0.6),
   };
 }
 
@@ -308,7 +317,7 @@ export function useDeliveryMetrics({
     queryKey: ['governance', 'delivery', productId, boardId, sprintCount, useMock],
     queryFn: () => {
       if (useMock) {
-        return Promise.resolve(generateMockData(sprintCount));
+        return Promise.resolve(generateMockData(sprintCount, productId || 'PROJ'));
       }
       return fetchDeliveryMetrics(productId!, sprintCount);
     },

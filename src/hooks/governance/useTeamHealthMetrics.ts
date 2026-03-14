@@ -59,32 +59,42 @@ interface UseTeamHealthMetricsOptions {
   useMock?: boolean;
 }
 
-// Generate mock team health data for demonstration
-function generateMockTeamHealthData(): TeamHealthMetrics {
+// Generate project-specific mock team health data
+function generateMockTeamHealthData(productId: string = 'default'): TeamHealthMetrics {
+  // Project-specific team profiles
+  const projectConfigs: Record<string, { size: number; change: number; satisfaction: number; retention: number; risk: 'low' | 'medium' | 'high' }> = {
+    'default': { size: 15, change: 2, satisfaction: 7.8, retention: 94, risk: 'low' },
+    'payment': { size: 8, change: 1, satisfaction: 8.2, retention: 96, risk: 'low' },
+    'auth': { size: 6, change: 0, satisfaction: 7.2, retention: 88, risk: 'medium' },
+    'dashboard': { size: 12, change: 3, satisfaction: 8.5, retention: 98, risk: 'low' },
+  };
+  
+  const config = projectConfigs[productId] || projectConfigs['default'];
+  
   return {
     satisfaction: {
       overall: {
-        score: 7.8,
-        trend: 'up',
+        score: config.satisfaction,
+        trend: config.satisfaction >= 8 ? 'up' : config.satisfaction >= 7 ? 'stable' : 'down',
       },
       categories: [
-        { name: 'Workload', score: 7.5 },
-        { name: 'Autonomy', score: 8.2 },
-        { name: 'Growth', score: 7.0 },
-        { name: 'Recognition', score: 7.8 },
-        { name: 'Collaboration', score: 8.5 },
-        { name: 'Purpose', score: 8.0 },
+        { name: 'Workload', score: Math.min(10, config.satisfaction + 0.3) },
+        { name: 'Autonomy', score: Math.min(10, config.satisfaction + 0.5) },
+        { name: 'Growth', score: Math.min(10, config.satisfaction - 0.2) },
+        { name: 'Recognition', score: Math.min(10, config.satisfaction + 0.1) },
+        { name: 'Collaboration', score: Math.min(10, config.satisfaction + 0.8) },
+        { name: 'Purpose', score: Math.min(10, config.satisfaction + 0.4) },
       ],
     },
     teamSize: {
-      current: 15,
-      change: 2,
+      current: config.size,
+      change: config.change,
     },
     retention: {
-      rate: 94,
+      rate: config.retention,
     },
     burnout: {
-      riskLevel: 'low',
+      riskLevel: config.risk,
     },
     recentRetrospectives: [
       {
@@ -96,7 +106,7 @@ function generateMockTeamHealthData(): TeamHealthMetrics {
           { description: 'Add estimation training session', owner: 'Bob', status: 'in_progress' },
           { description: 'Create API documentation template', owner: 'Alice', status: 'open' },
         ],
-        teamMood: 'good',
+        teamMood: config.satisfaction >= 8 ? 'great' : config.satisfaction >= 7 ? 'good' : 'neutral',
         participation: 100,
       },
       {
@@ -108,7 +118,7 @@ function generateMockTeamHealthData(): TeamHealthMetrics {
           { description: 'Schedule tech debt sprint', owner: 'Carol', status: 'done' },
           { description: 'Add integration tests', owner: 'David', status: 'in_progress' },
         ],
-        teamMood: 'great',
+        teamMood: config.satisfaction >= 7.5 ? 'great' : 'good',
         participation: 93,
       },
     ],
@@ -130,7 +140,7 @@ export function useTeamHealthMetrics({
     queryKey: ['governance', 'teamHealth', productId, useMock],
     queryFn: () => {
       if (useMock) {
-        return Promise.resolve(generateMockTeamHealthData());
+        return Promise.resolve(generateMockTeamHealthData(productId || 'default'));
       }
       return fetchTeamHealthMetrics(productId!);
     },

@@ -4,46 +4,52 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { jiraClient } from '@/integrations/jira/client';
-import type { BacklogMetrics, BacklogIssue } from '@/integrations/jira/types';
+
+export interface BacklogMetrics {
+  totalStories: number;
+  readyStories: number;
+  healthScore: number;
+  averageAge: number;
+  investScores: Record<string, number>;
+  deepScores: Record<string, number>;
+}
 
 interface UseBacklogMetricsOptions {
-  productId: string | null;
+  projectKey?: string | null;
   useMock?: boolean;
 }
 
-// Generate mock backlog data for demonstration
-function generateMockBacklogData(): BacklogMetrics {
+// Generate project-specific mock backlog data
+function generateMockBacklogData(projectKey: string = 'PROJ'): BacklogMetrics {
+  // Project-specific data variations
+  const projectConfigs: Record<string, { total: number; ready: number; health: number; age: number }> = {
+    'PROJ': { total: 47, ready: 18, health: 78, age: 12 },
+    'PAY': { total: 32, ready: 24, health: 85, age: 8 },
+    'AUTH': { total: 56, ready: 15, health: 62, age: 18 },
+    'DASH': { total: 28, ready: 20, health: 88, age: 6 },
+  };
+  
+  const config = projectConfigs[projectKey] || projectConfigs['PROJ'];
+  
   return {
-    totalIssues: 47,
-    totalStoryPoints: 186,
-    aging: {
-      fresh: 12, // < 7 days
-      aging: 23, // 7-30 days
-      stale: 12, // > 30 days
+    totalStories: config.total,
+    readyStories: config.ready,
+    healthScore: config.health,
+    averageAge: config.age,
+    investScores: {
+      independent: 85,
+      negotiable: 78,
+      valuable: 92,
+      estimable: 75,
+      small: 68,
+      testable: 88,
     },
-    readiness: {
-      ready: 18,
-      needsRefinement: 22,
-      inProgress: 7,
+    deepScores: {
+      detailedAppropriately: 82,
+      estimated: 76,
+      emergent: 90,
+      prioritized: 85,
     },
-    byPriority: {
-      highest: 3,
-      high: 12,
-      medium: 22,
-      low: 8,
-      lowest: 2,
-    },
-    byType: {
-      story: 32,
-      bug: 8,
-      task: 5,
-      epic: 2,
-      other: 0,
-    },
-    issuesTrend: [42, 44, 45, 47],
-    velocityTrend: [38, 42, 35, 40],
-    wipIssues: 8,
-    wipStoryPoints: 32,
   };
 }
 
