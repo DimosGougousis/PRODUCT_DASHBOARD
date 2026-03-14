@@ -136,8 +136,8 @@ export default function DeliveryPerformancePage() {
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                           sprint.completed >= sprint.committed
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
                         }`}
                       >
                         {((sprint.completed / sprint.committed) * 100).toFixed(0)}%
