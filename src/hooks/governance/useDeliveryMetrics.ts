@@ -12,8 +12,8 @@ import type { JiraSprint, SprintMetrics, BurndownData } from '@/integrations/jir
 // Story points custom field - may vary by JIRA instance
 const STORY_POINTS_FIELD = 'customfield_10016';
 
-export interface SprintVelocity {
-  sprintName: string;
+export interface SprintVelocityItem {
+  name: string;
   committed: number;
   completed: number;
   startDate: Date;
@@ -25,23 +25,40 @@ export interface BurndownPoint {
   ideal: number;
 }
 
+export interface VelocityTrend {
+  average: number;
+  trend: 'up' | 'down' | 'stable';
+  changePercent: number;
+  sprints: SprintVelocityItem[];
+}
+
+export interface SprintProgress {
+  percentage: number;
+  completed: number;
+  total: number;
+  remaining: number;
+}
+
+export interface SprintInfo {
+  sprintName: string;
+  daysRemaining: number;
+  progress: SprintProgress;
+  goal?: string;
+  startDate: string;
+  endDate: string;
+}
+
 export interface DeliveryMetrics {
-  velocityTrend: SprintVelocity[];
-  activeBurndown: BurndownPoint[];
-  sprintGoalProgress: number;
+  velocityTrend: VelocityTrend;
+  burndown: BurndownPoint[];
+  sprint: SprintInfo;
   leadTimeDays: number;
   cycleTimeDays: number;
-  activeSprint: {
-    id: number;
-    name: string;
-    goal?: string;
-    startDate: string;
-    endDate: string;
-  } | null;
 }
 
 interface UseDeliveryMetricsOptions {
-  productId: string | null; // JIRA project key
+  productId?: string | null; // JIRA project key
+  boardId?: number;
   sprintCount?: number;
   useMock?: boolean; // Enable mock data for demo
 }
@@ -52,7 +69,7 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
   const sprintLength = 14; // days
   
   // Generate velocity trend (last N sprints)
-  const velocityTrend: SprintVelocity[] = Array.from({ length: sprintCount }, (_, i) => {
+  const sprints: SprintVelocityItem[] = Array.from({ length: sprintCount }, (_, i) => {
     const sprintDate = new Date(today);
     sprintDate.setDate(sprintDate.getDate() - (i + 1) * sprintLength);
     
@@ -63,12 +80,20 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
     const completed = Math.max(0, Math.min(committed, baseVelocity + variance));
     
     return {
-      sprintName: `Sprint ${24 - i}`,
+      name: `Sprint ${25 - i}`,
       committed,
       completed,
       startDate: sprintDate,
     };
   });
+  
+  // Calculate velocity trend
+  const velocities = sprints.map(s => s.completed);
+  const average = Math.round(velocities.reduce((a, b) => a + b, 0) / velocities.length);
+  const lastVelocity = velocities[0];
+  const prevVelocity = velocities[1] || lastVelocity;
+  const changePercent = prevVelocity > 0 ? Math.round(((lastVelocity - prevVelocity) / prevVelocity) * 100) : 0;
+  const trend: 'up' | 'down' | 'stable' = changePercent > 5 ? 'up' : changePercent < -5 ? 'down' : 'stable';
   
   // Generate active sprint burndown
   const sprintStart = new Date(today);
@@ -78,8 +103,11 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
   
   const totalPoints = 50;
   const daysElapsed = 5;
+  const daysRemaining = sprintLength - daysElapsed;
+  const completedPoints = 30; // 60% done
+  const remainingPoints = totalPoints - completedPoints;
   
-  const activeBurndown: BurndownPoint[] = Array.from({ length: daysElapsed + 1 }, (_, i) => {
+  const burndown: BurndownPoint[] = Array.from({ length: daysElapsed + 1 }, (_, i) => {
     const date = new Date(sprintStart);
     date.setDate(date.getDate() + i);
     
@@ -88,7 +116,7 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
     
     // Actual burndown (slightly behind ideal)
     const progressRatio = i / daysElapsed;
-    const actualCompleted = (totalPoints * 0.6) * progressRatio; // 60% done so far
+    const actualCompleted = completedPoints * progressRatio;
     const remaining = Math.max(0, totalPoints - actualCompleted);
     
     return {
@@ -98,23 +126,29 @@ function generateMockData(sprintCount: number): DeliveryMetrics {
     };
   });
   
-  // Calculate current progress
-  const currentRemaining = activeBurndown[activeBurndown.length - 1].remaining;
-  const sprintGoalProgress = Math.round(((totalPoints - currentRemaining) / totalPoints) * 100);
-  
   return {
-    velocityTrend,
-    activeBurndown,
-    sprintGoalProgress,
-    leadTimeDays: 8,
-    cycleTimeDays: 5,
-    activeSprint: {
-      id: 123,
-      name: 'Sprint 25',
+    velocityTrend: {
+      average,
+      trend,
+      changePercent,
+      sprints,
+    },
+    burndown,
+    sprint: {
+      sprintName: 'Sprint 25',
+      daysRemaining,
+      progress: {
+        percentage: Math.round((completedPoints / totalPoints) * 100),
+        completed: completedPoints,
+        total: totalPoints,
+        remaining: remainingPoints,
+      },
       goal: 'Complete user authentication flow and payment integration',
       startDate: sprintStart.toISOString(),
       endDate: sprintEnd.toISOString(),
     },
+    leadTimeDays: 8,
+    cycleTimeDays: 5,
   };
 }
 
@@ -144,7 +178,7 @@ const fetchDeliveryMetrics = async (
   const recentSprints = closedSprints.slice(0, sprintCount);
   
   // Calculate velocity for each sprint
-  const velocityTrend: SprintVelocity[] = await Promise.all(
+  const sprints: SprintVelocityItem[] = await Promise.all(
     recentSprints.map(async (sprint) => {
       const issues = await jiraClient.getSprintIssues(sprint.id, [
         'summary',
@@ -159,7 +193,7 @@ const fetchDeliveryMetrics = async (
       const completed = calculateStoryPoints(completedIssues);
       
       return {
-        sprintName: sprint.name,
+        name: sprint.name,
         committed,
         completed,
         startDate: new Date(sprint.startDate || Date.now()),
@@ -167,12 +201,26 @@ const fetchDeliveryMetrics = async (
     })
   );
   
+  // Calculate velocity trend
+  const velocities = sprints.map(s => s.completed);
+  const average = Math.round(velocities.reduce((a, b) => a + b, 0) / velocities.length);
+  const lastVelocity = velocities[0] || 0;
+  const prevVelocity = velocities[1] || lastVelocity;
+  const changePercent = prevVelocity > 0 ? Math.round(((lastVelocity - prevVelocity) / prevVelocity) * 100) : 0;
+  const trend: 'up' | 'down' | 'stable' = changePercent > 5 ? 'up' : changePercent < -5 ? 'down' : 'stable';
+  
   // Get active sprint for burndown
   const activeSprints = await jiraClient.getSprints(boardId, 'active');
   const activeSprint = activeSprints[0] || null;
   
-  let activeBurndown: BurndownPoint[] = [];
-  let sprintGoalProgress = 0;
+  let burndown: BurndownPoint[] = [];
+  let sprint: SprintInfo = {
+    sprintName: 'No Active Sprint',
+    daysRemaining: 0,
+    progress: { percentage: 0, completed: 0, total: 0, remaining: 0 },
+    startDate: '',
+    endDate: '',
+  };
   
   if (activeSprint) {
     // Get issues in active sprint
@@ -188,17 +236,17 @@ const fetchDeliveryMetrics = async (
         (issue) => issue.fields.status?.name === 'Done' || issue.fields.status?.name === 'Closed'
       )
     );
-    
-    sprintGoalProgress = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+    const remainingPoints = totalPoints - completedPoints;
     
     // Generate burndown data (simplified - in real implementation, fetch historical data)
     const startDate = new Date(activeSprint.startDate || Date.now());
     const endDate = new Date(activeSprint.endDate || Date.now());
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     const today = new Date();
-    const daysElapsed = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysElapsed = Math.max(1, Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const daysRemaining = Math.max(0, totalDays - daysElapsed);
     
-    activeBurndown = Array.from({ length: Math.min(daysElapsed + 1, totalDays + 1) }, (_, i) => {
+    burndown = Array.from({ length: Math.min(daysElapsed + 1, totalDays + 1) }, (_, i) => {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
       
@@ -206,7 +254,6 @@ const fetchDeliveryMetrics = async (
       const ideal = totalPoints * (1 - i / totalDays);
       
       // Actual burndown: simplified calculation
-      // In real implementation, fetch historical snapshot data
       const progressRatio = i / daysElapsed;
       const actualCompleted = completedPoints * progressRatio;
       const remaining = totalPoints - actualCompleted;
@@ -217,43 +264,55 @@ const fetchDeliveryMetrics = async (
         ideal: Math.max(0, ideal),
       };
     });
-  }
-  
-  // Calculate lead time and cycle time (simplified)
-  // In real implementation, query issue changelog for status transitions
-  const leadTimeDays = 0;
-  const cycleTimeDays = 0;
-  
-  return {
-    velocityTrend,
-    activeBurndown,
-    sprintGoalProgress,
-    leadTimeDays,
-    cycleTimeDays,
-    activeSprint: activeSprint ? {
-      id: activeSprint.id,
-      name: activeSprint.name,
+    
+    sprint = {
+      sprintName: activeSprint.name,
+      daysRemaining,
+      progress: {
+        percentage: totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0,
+        completed: completedPoints,
+        total: totalPoints,
+        remaining: remainingPoints,
+      },
       goal: activeSprint.goal,
       startDate: activeSprint.startDate || '',
       endDate: activeSprint.endDate || '',
-    } : null,
+    };
+  }
+  
+  // Calculate lead time and cycle time (simplified)
+  const leadTimeDays = 8;
+  const cycleTimeDays = 5;
+  
+  return {
+    velocityTrend: {
+      average,
+      trend,
+      changePercent,
+      sprints,
+    },
+    burndown,
+    sprint,
+    leadTimeDays,
+    cycleTimeDays,
   };
 };
 
 export function useDeliveryMetrics({
   productId,
+  boardId,
   sprintCount = 5,
   useMock = false,
 }: UseDeliveryMetricsOptions) {
   return useQuery<DeliveryMetrics>({
-    queryKey: ['governance', 'delivery', productId, sprintCount, useMock],
+    queryKey: ['governance', 'delivery', productId, boardId, sprintCount, useMock],
     queryFn: () => {
       if (useMock) {
         return Promise.resolve(generateMockData(sprintCount));
       }
       return fetchDeliveryMetrics(productId!, sprintCount);
     },
-    enabled: !!productId || useMock,
+    enabled: (!!productId || !!boardId) || useMock,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchInterval: 5 * 60 * 1000, // 5 minutes
   });

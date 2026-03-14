@@ -3,10 +3,40 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import type { FinancialMetrics } from '@/types/governance/financial';
+
+export interface BudgetData {
+  totalBudget: number;
+  actualSpend: number;
+  plannedSpend: number;
+  forecastEac: number;
+  monthlySpend: {
+    month: string;
+    planned: number;
+    actual: number;
+  }[];
+  breakdown: {
+    personnel: number;
+    infrastructure: number;
+    tools: number;
+  };
+}
+
+export interface CostPerPointData {
+  current: number;
+  trend: 'up' | 'down' | 'stable';
+  history: {
+    sprintName: string;
+    costPerPoint: number;
+  }[];
+}
+
+export interface FinancialMetrics {
+  budget: BudgetData;
+  costPerPoint: CostPerPointData;
+}
 
 interface UseFinancialMetricsOptions {
-  productId: string | null;
+  productId?: string | null;
   useMock?: boolean;
 }
 
@@ -23,43 +53,34 @@ function generateMockFinancialData(): FinancialMetrics {
 
   const totalSpent = monthlySpend.reduce((sum, m) => sum + m.actual, 0);
   const totalPlanned = monthlySpend.reduce((sum, m) => sum + m.planned, 0);
+  const forecastEac = totalSpent + 300000; // Projected for remaining 6 months
+
+  const history = [
+    { sprintName: 'Sprint 21', costPerPoint: 679 },
+    { sprintName: 'Sprint 22', costPerPoint: 742 },
+    { sprintName: 'Sprint 23', costPerPoint: 640 },
+    { sprintName: 'Sprint 24', costPerPoint: 713 },
+    { sprintName: 'Sprint 25', costPerPoint: 715 },
+  ];
 
   return {
     budget: {
       totalBudget: 600000,
-      spent: totalSpent,
-      remaining: 600000 - totalSpent,
-      projected: totalSpent + 300000, // Projected for remaining 6 months
-      currency: 'USD',
-      period: {
-        start: '2026-01-01',
-        end: '2026-12-31',
-      },
+      actualSpend: totalSpent,
+      plannedSpend: totalPlanned,
+      forecastEac,
       monthlySpend,
+      breakdown: {
+        personnel: 543000,
+        infrastructure: 18000,
+        tools: 12000,
+      },
     },
-    costs: {
-      totalCost: totalSpent,
-      teamCosts: [
-        { role: 'Engineering', count: 8, costPerPerson: 8000, totalCost: 384000 },
-        { role: 'Product', count: 3, costPerPerson: 9000, totalCost: 81000 },
-        { role: 'Design', count: 2, costPerPerson: 7000, totalCost: 42000 },
-        { role: 'QA', count: 2, costPerPerson: 6000, totalCost: 36000 },
-      ],
-      infrastructureCost: 18000,
-      toolingCost: 12000,
-      otherCosts: 8000,
+    costPerPoint: {
+      current: 715,
+      trend: 'stable',
+      history,
     },
-    sprintCosts: [
-      { sprintName: 'Sprint 21', storyPointsCompleted: 42, cost: 28500, costPerPoint: 679 },
-      { sprintName: 'Sprint 22', storyPointsCompleted: 38, cost: 28200, costPerPoint: 742 },
-      { sprintName: 'Sprint 23', storyPointsCompleted: 45, cost: 28800, costPerPoint: 640 },
-      { sprintName: 'Sprint 24', storyPointsCompleted: 40, cost: 28500, costPerPoint: 713 },
-      { sprintName: 'Sprint 25', storyPointsCompleted: 35, cost: 28000, costPerPoint: 800 },
-    ],
-    costPerStoryPoint: 715,
-    budgetBurnRate: 47500,
-    projectedOverUnder: -15000,
-    roi: 125,
   };
 }
 

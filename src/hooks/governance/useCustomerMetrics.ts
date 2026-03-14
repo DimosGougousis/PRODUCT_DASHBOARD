@@ -3,58 +3,68 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import type { CustomerMetrics } from '@/types/governance/customer';
+
+export interface NPSData {
+  score: number;
+  promoters: number;
+  passives: number;
+  detractors: number;
+  promotersCount: number;
+  passivesCount: number;
+  detractorsCount: number;
+  trend: 'up' | 'down' | 'stable';
+}
+
+export interface CSATData {
+  score: number;
+  responseRate: number;
+}
+
+export interface SupportTicketsData {
+  total: number;
+  highPriority: number;
+  avgResolutionTime: number;
+}
+
+export interface CustomerMetrics {
+  nps: NPSData;
+  csat: CSATData;
+  supportTickets: SupportTicketsData;
+}
 
 interface UseCustomerMetricsOptions {
-  productId: string | null;
+  productId?: string | null;
   useMock?: boolean;
 }
 
 // Generate mock customer data for demonstration
 function generateMockCustomerData(): CustomerMetrics {
+  const totalResponses = 200;
+  const promoters = 62; // 125/200 = 62%
+  const passives = 23; // 45/200 = 22%
+  const detractors = 15; // 30/200 = 15%
+  const npsScore = promoters - detractors; // 47
+  
   return {
     nps: {
-      score: 42,
-      promoters: 125,
-      passives: 45,
-      detractors: 30,
-      totalResponses: 200,
-      trend: [35, 38, 40, 39, 41, 42],
+      score: npsScore,
+      promoters,
+      passives,
+      detractors,
+      promotersCount: 125,
+      passivesCount: 45,
+      detractorsCount: 30,
+      trend: 'up',
     },
     csat: {
-      score: 87,
-      satisfied: 174,
-      neutral: 18,
-      dissatisfied: 8,
-      totalResponses: 200,
-      trend: [82, 84, 85, 86, 86, 87],
+      score: 4.4, // Out of 5
+      responseRate: 87,
     },
-    support: {
-      totalTickets: 156,
-      openTickets: 12,
-      resolvedThisWeek: 23,
+    supportTickets: {
+      total: 12,
+      highPriority: 3,
       avgResolutionTime: 18.5,
-      avgSatisfaction: 4.2,
-      ticketsByCategory: {
-        bug: 45,
-        feature: 32,
-        question: 56,
-        other: 23,
-      },
-      ticketsByPriority: {
-        urgent: 8,
-        high: 24,
-        medium: 78,
-        low: 46,
-      },
-      trend: [38, 42, 35, 41],
     },
-    featureAdoption: [
-      { feature: 'Dashboard', users: 850, percentage: 85 },
-      { feature: 'Reports', users: 620, percentage: 62 },
-      { feature: 'API Integration', users: 340, percentage: 34 },
-      { feature: 'Mobile App', users: 480, percentage: 48 },
-    ],
   };
 }
 
