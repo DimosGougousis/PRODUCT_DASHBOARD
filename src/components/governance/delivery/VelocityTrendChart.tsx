@@ -16,21 +16,21 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
-import type { SprintVelocity } from '@/hooks/governance/useDeliveryMetrics';
+import type { SprintVelocityItem } from '@/hooks/governance/useDeliveryMetrics';
 
 interface VelocityTrendChartProps {
-  data: SprintVelocity[];
+  data: SprintVelocityItem[];
   isLoading: boolean;
 }
 
-function calculateForecast(data: SprintVelocity[]): number {
+function calculateForecast(data: SprintVelocityItem[]): number {
   if (data.length === 0) return 0;
   const recent = data.slice(0, 3); // Last 3 sprints
   const avg = recent.reduce((sum, sprint) => sum + sprint.completed, 0) / recent.length;
   return Math.round(avg);
 }
 
-function calculateTrend(data: SprintVelocity[]): 'up' | 'down' | 'stable' {
+function calculateTrend(data: SprintVelocityItem[]): 'up' | 'down' | 'stable' {
   if (data.length < 2) return 'stable';
   const recent = data.slice(0, 3);
   const older = data.slice(3, 6);
@@ -90,7 +90,7 @@ export function VelocityTrendChart({ data, isLoading }: VelocityTrendChartProps)
   const chartData = [...data].reverse().map(sprint => ({
     ...sprint,
     // Shorten sprint name for display
-    displayName: sprint.sprintName.replace(/Sprint\s+/i, 'S'),
+    displayName: sprint.name.replace(/Sprint\s+/i, 'S'),
   }));
 
   return (
