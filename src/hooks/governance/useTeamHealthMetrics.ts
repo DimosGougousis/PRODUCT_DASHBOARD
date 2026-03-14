@@ -3,10 +3,59 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import type { TeamHealthMetrics } from '@/types/governance/teamHealth';
+
+export interface SatisfactionCategory {
+  name: string;
+  score: number;
+}
+
+export interface TeamSatisfaction {
+  overall: {
+    score: number;
+    trend: 'up' | 'down' | 'stable';
+  };
+  categories: SatisfactionCategory[];
+}
+
+export interface TeamSize {
+  current: number;
+  change: number;
+}
+
+export interface Retention {
+  rate: number;
+}
+
+export interface Burnout {
+  riskLevel: 'low' | 'medium' | 'high';
+}
+
+export interface RetrospectiveActionItem {
+  description: string;
+  owner: string;
+  status: 'open' | 'in_progress' | 'done';
+}
+
+export interface SprintRetrospective {
+  sprintName: string;
+  date: string;
+  whatWentWell: string[];
+  whatToImprove: string[];
+  actionItems: RetrospectiveActionItem[];
+  teamMood: 'great' | 'good' | 'neutral' | 'challenging' | 'difficult';
+  participation: number;
+}
+
+export interface TeamHealthMetrics {
+  satisfaction: TeamSatisfaction;
+  teamSize: TeamSize;
+  retention: Retention;
+  burnout: Burnout;
+  recentRetrospectives: SprintRetrospective[];
+}
 
 interface UseTeamHealthMetricsOptions {
-  productId: string | null;
+  productId?: string | null;
   useMock?: boolean;
 }
 
@@ -14,42 +63,29 @@ interface UseTeamHealthMetricsOptions {
 function generateMockTeamHealthData(): TeamHealthMetrics {
   return {
     satisfaction: {
-      overall: 7.8,
-      categories: {
-        workload: 7.5,
-        autonomy: 8.2,
-        growth: 7.0,
-        recognition: 7.8,
-        collaboration: 8.5,
-        purpose: 8.0,
+      overall: {
+        score: 7.8,
+        trend: 'up',
       },
-      trend: [7.2, 7.4, 7.5, 7.6, 7.7, 7.8],
-      responseRate: 85,
-      totalResponses: 13,
+      categories: [
+        { name: 'Workload', score: 7.5 },
+        { name: 'Autonomy', score: 8.2 },
+        { name: 'Growth', score: 7.0 },
+        { name: 'Recognition', score: 7.8 },
+        { name: 'Collaboration', score: 8.5 },
+        { name: 'Purpose', score: 8.0 },
+      ],
     },
-    burnout: {
-      exhaustionScore: 35,
-      cynicismScore: 25,
-      efficacyScore: 78,
-      riskLevel: 'low',
-      atRiskMembers: 1,
-      trend: [40, 38, 36, 35, 34, 35],
+    teamSize: {
+      current: 15,
+      change: 2,
     },
     retention: {
-      totalMembers: 15,
-      newHires: 2,
-      departures: 0,
-      retentionRate: 94,
-      avgTenure: 18,
-      turnoverRate: 6,
-      flightRisk: 1,
+      rate: 94,
     },
-    members: [
-      { id: '1', name: 'Alice Chen', role: 'Senior Engineer', startDate: '2024-01-15', satisfaction: 8.5, lastOneOnOne: '2026-02-20', goalsDefined: true, growthPlanActive: true },
-      { id: '2', name: 'Bob Smith', role: 'Product Manager', startDate: '2023-06-01', satisfaction: 7.8, lastOneOnOne: '2026-02-18', goalsDefined: true, growthPlanActive: true },
-      { id: '3', name: 'Carol Jones', role: 'Engineer', startDate: '2024-08-10', satisfaction: 7.2, lastOneOnOne: '2026-02-15', goalsDefined: true, growthPlanActive: false },
-      { id: '4', name: 'David Lee', role: 'Designer', startDate: '2023-09-20', satisfaction: 8.0, lastOneOnOne: '2026-02-22', goalsDefined: true, growthPlanActive: true },
-    ],
+    burnout: {
+      riskLevel: 'low',
+    },
     recentRetrospectives: [
       {
         sprintName: 'Sprint 25',
@@ -76,10 +112,6 @@ function generateMockTeamHealthData(): TeamHealthMetrics {
         participation: 93,
       },
     ],
-    oneOnOneCompliance: 92,
-    goalsDefined: 87,
-    lastSurveyDate: '2026-03-01',
-    nextSurveyDate: '2026-04-01',
   };
 }
 
