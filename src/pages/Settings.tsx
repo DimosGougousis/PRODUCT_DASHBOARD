@@ -1,12 +1,21 @@
-import Layout from '@/components/Layout/Layout';
+import { useState, useEffect } from 'react';
+import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { User, Bell, Palette, Database, Trash2 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const Settings = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleClearData = () => {
     if (window.confirm('Are you sure you want to clear all data? This cannot be undone.')) {
       localStorage.removeItem('prd-agent-data');
@@ -14,9 +23,15 @@ const Settings = () => {
     }
   };
 
+  const isDarkMode = theme === 'dark';
+
+  const handleDarkModeToggle = (checked: boolean) => {
+    setTheme(checked ? 'dark' : 'light');
+  };
+
   return (
-    <Layout title="Settings" subtitle="Configure your PRD Agent preferences">
-      <div className="max-w-2xl space-y-6 animate-fade-in">
+    <Layout title="Settings" subtitle="Configure your PO Dashboard preferences">
+      <div className="container mx-auto px-4 py-6 max-w-2xl space-y-6 animate-fade-in">
         {/* Profile Settings */}
         <Card>
           <CardHeader>
@@ -96,7 +111,11 @@ const Settings = () => {
                 <Label className="text-base">Dark Mode</Label>
                 <p className="text-sm text-muted-foreground">Use dark theme</p>
               </div>
-              <Switch />
+              <Switch
+                checked={mounted ? isDarkMode : false}
+                onCheckedChange={handleDarkModeToggle}
+                disabled={!mounted}
+              />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
