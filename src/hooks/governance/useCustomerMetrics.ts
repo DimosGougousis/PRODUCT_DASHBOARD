@@ -91,7 +91,7 @@ export function useCustomerMetrics({
     queryKey: ['governance', 'customer', productId, useMock],
     queryFn: () => {
       if (useMock) {
-        return Promise.resolve(generateMockCustomerData());
+        return Promise.resolve(generateMockCustomerData(productId || 'default'));
       }
       return fetchCustomerMetrics(productId!);
     },
