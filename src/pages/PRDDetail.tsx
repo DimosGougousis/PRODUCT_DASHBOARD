@@ -15,7 +15,7 @@ import { PRD, PRDStatus } from '@/types';
 import { calculatePRDProgress } from '@/data/mockData';
 import { usePRDs } from '@/context/PRDContext';
 import SectionCard from '@/components/SectionCard';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 
 export default function PRDDetail() {
   const { id } = useParams<{ id: string }>();
@@ -99,11 +99,11 @@ export default function PRDDetail() {
             Back to PRDs
           </Button>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-card rounded-lg shadow-sm border p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h1 className="text-3xl font-bold mb-2">{prd.title}</h1>
-                <p className="text-gray-600">{prd.description}</p>
+                <p className="text-muted-foreground">{prd.description}</p>
               </div>
               <Badge className={priorityColors[prd.priority]}>
                 {prd.priority}
@@ -113,32 +113,32 @@ export default function PRDDetail() {
             {/* Metrics Bar */}
             <div className="grid grid-cols-4 gap-4 mb-4">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-500" />
+                <User className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-gray-500">Owner</p>
+                  <p className="text-xs text-muted-foreground">Owner</p>
                   <p className="font-medium">{prd.owner}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-gray-500" />
+                <Calendar className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-gray-500">Target Date</p>
+                  <p className="text-xs text-muted-foreground">Target Date</p>
                   <p className="font-medium">
                     {new Date(prd.targetDate).toLocaleDateString()}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-gray-500" />
+                <TrendingUp className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-gray-500">Progress</p>
+                  <p className="text-xs text-muted-foreground">Progress</p>
                   <p className="font-medium">{prd.daysInProgress} days</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Flag className="w-4 h-4 text-gray-500" />
+                <Flag className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-gray-500">Sections</p>
+                  <p className="text-xs text-muted-foreground">Sections</p>
                   <p className="font-medium">
                     {completedSections}/{totalSections}
                   </p>
