@@ -36,7 +36,7 @@ export function StoryReadinessChart({ metrics, isLoading }: StoryReadinessChartP
           <CardTitle className="text-sm font-medium">Priority Distribution</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -63,7 +63,7 @@ export function StoryReadinessChart({ metrics, isLoading }: StoryReadinessChartP
             {priorityData.map((p) => (
               <div key={p.label} className="flex items-center gap-1 text-xs">
                 <div className={`w-2 h-2 rounded-full ${p.color}`} />
-                <span className="text-gray-600">{p.label}:</span>
+                <span className="text-muted-foreground">{p.label}:</span>
                 <span className="font-medium">{p.count}</span>
               </div>
             ))}
@@ -73,10 +73,10 @@ export function StoryReadinessChart({ metrics, isLoading }: StoryReadinessChartP
         {/* Type Distribution */}
         <div className="grid grid-cols-4 gap-2">
           {typeData.map((t) => (
-            <div key={t.label} className="text-center p-2 bg-gray-50 rounded">
+            <div key={t.label} className="text-center p-2 bg-muted rounded">
               <span className="text-lg">{t.icon}</span>
               <div className="text-xs font-bold">{t.count}</div>
-              <div className="text-xs text-gray-500">{t.label}</div>
+              <div className="text-xs text-muted-foreground">{t.label}</div>
             </div>
           ))}
         </div>
@@ -84,7 +84,7 @@ export function StoryReadinessChart({ metrics, isLoading }: StoryReadinessChartP
         {/* Trend */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">4-week trend</span>
+            <span className="text-muted-foreground">4-week trend</span>
             <div className="flex gap-1">
               {metrics?.issuesTrend.map((count, i) => (
                 <Badge key={i} variant="outline" className="text-xs">

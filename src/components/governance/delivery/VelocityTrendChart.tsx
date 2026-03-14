@@ -50,9 +50,9 @@ export function VelocityTrendChart({ data, isLoading }: VelocityTrendChartProps)
   const trend = calculateTrend(data || []);
   
   const trendConfig = {
-    up: { icon: TrendingUp, color: 'bg-green-100 text-green-700', label: 'Improving' },
-    down: { icon: TrendingDown, color: 'bg-red-100 text-red-700', label: 'Declining' },
-    stable: { icon: Minus, color: 'bg-gray-100 text-gray-700', label: 'Stable' },
+    up: { icon: TrendingUp, color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400', label: 'Improving' },
+    down: { icon: TrendingDown, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400', label: 'Declining' },
+    stable: { icon: Minus, color: 'bg-muted text-foreground', label: 'Stable' },
   };
   const trendInfo = trendConfig[trend];
   const TrendIcon = trendInfo.icon;
@@ -64,7 +64,7 @@ export function VelocityTrendChart({ data, isLoading }: VelocityTrendChartProps)
           <CardTitle className="text-sm font-medium">Velocity Trend</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 bg-gray-100 animate-pulse rounded" />
+          <div className="h-48 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -78,7 +78,7 @@ export function VelocityTrendChart({ data, isLoading }: VelocityTrendChartProps)
           <CardTitle className="text-sm font-medium">Velocity Trend (5 Sprints)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-sm text-gray-400">
+          <div className="h-48 bg-muted rounded flex items-center justify-center text-sm text-muted-foreground">
             No sprint data available
           </div>
         </CardContent>
@@ -131,7 +131,7 @@ export function VelocityTrendChart({ data, isLoading }: VelocityTrendChartProps)
         
         {/* Forecast summary */}
         <div className="mt-3 pt-3 border-t flex items-center justify-between text-xs">
-          <span className="text-gray-500">Next sprint forecast:</span>
+          <span className="text-muted-foreground">Next sprint forecast:</span>
           <span className="font-semibold text-blue-600">{forecast} points</span>
         </div>
       </CardContent>

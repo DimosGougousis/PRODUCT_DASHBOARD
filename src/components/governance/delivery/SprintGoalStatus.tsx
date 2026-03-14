@@ -70,7 +70,7 @@ export function SprintGoalStatus({
     return (
       <Card>
         <CardContent className="p-4">
-          <div className="h-20 bg-gray-100 animate-pulse rounded" />
+          <div className="h-20 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -81,7 +81,7 @@ export function SprintGoalStatus({
     return (
       <Card>
         <CardContent className="p-4">
-          <div className="flex items-center gap-3 text-gray-400">
+          <div className="flex items-center gap-3 text-muted-foreground">
             <Target className="w-5 h-5" />
             <span className="text-sm">No active sprint goal</span>
           </div>
@@ -102,7 +102,7 @@ export function SprintGoalStatus({
           <div className="flex-1 min-w-0">
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-500 uppercase tracking-wide">Sprint Goal</span>
+              <span className="text-xs text-muted-foreground uppercase tracking-wide">Sprint Goal</span>
               <Badge variant={status.badgeVariant} className="text-xs">
                 {status.badge}
               </Badge>
@@ -117,7 +117,7 @@ export function SprintGoalStatus({
             <Progress value={progress} className="h-2 mb-2" />
             
             {/* Stats */}
-            <div className="flex justify-between text-xs text-gray-500">
+            <div className="flex justify-between text-xs text-muted-foreground">
               <span>{Math.round(progress)}% complete</span>
               <span>{daysRemaining} days remaining</span>
             </div>

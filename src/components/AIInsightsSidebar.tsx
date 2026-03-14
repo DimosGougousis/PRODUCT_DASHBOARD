@@ -17,13 +17,12 @@ export default function AIInsightsSidebar({ prdId, isOpen, onClose }: AIInsights
   const [recommendations] = useState<Recommendation[]>(generateMockRecommendations(prdId));
   const [alerts] = useState<AlertType[]>(generateMockAlerts(prdId));
 
-  const handleApplyRecommendation = (recId: string) => {
-    console.log('Applying recommendation:', recId);
-    // In real app, would update PRD state
+  const handleApplyRecommendation = (_recId: string) => {
+    // TODO: In real app, would update PRD state
   };
 
-  const handleDismissRecommendation = (recId: string) => {
-    console.log('Dismissing recommendation:', recId);
+  const handleDismissRecommendation = (_recId: string) => {
+    // TODO: Implement dismiss recommendation
   };
 
   if (!isOpen) return null;

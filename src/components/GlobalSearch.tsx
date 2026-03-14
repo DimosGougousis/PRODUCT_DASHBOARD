@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, FileText, Users, Clock, Command } from 'lucide-react';
+import { usePRDs } from '@/context/PRDContext';
 import {
   Dialog,
   DialogContent,
@@ -29,6 +30,82 @@ export default function GlobalSearch({ open, onClose }: GlobalSearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { prds, stakeholders } = usePRDs();
+
+  const performSearch = useCallback(
+    (searchQuery: string): SearchResult[] => {
+      const q = searchQuery.toLowerCase();
+      const matched: SearchResult[] = [];
+
+      for (const prd of prds) {
+        if (
+          prd.title.toLowerCase().includes(q) ||
+          prd.description.toLowerCase().includes(q) ||
+          prd.tags.some((t) => t.toLowerCase().includes(q))
+        ) {
+          matched.push({
+            id: prd.id,
+            type: 'prd',
+            title: prd.title,
+            description: prd.description,
+            url: `/prds/${prd.id}`,
+            metadata: `${prd.status} · ${prd.progress}% complete · Updated ${formatRelativeDate(prd.updatedAt)}`,
+          });
+        }
+
+        for (const section of prd.sections) {
+          if (
+            section.name.toLowerCase().includes(q) ||
+            section.content.toLowerCase().includes(q)
+          ) {
+            matched.push({
+              id: `${prd.id}-${section.id}`,
+              type: 'section',
+              title: `${section.name} — ${prd.title}`,
+              description: section.content.slice(0, 120) || 'No content yet',
+              url: `/prds/${prd.id}`,
+              metadata: `${section.completeness}% complete`,
+            });
+          }
+        }
+      }
+
+      for (const s of stakeholders) {
+        if (
+          s.name.toLowerCase().includes(q) ||
+          s.role.toLowerCase().includes(q) ||
+          s.function.toLowerCase().includes(q) ||
+          s.expertise.some((e) => e.toLowerCase().includes(q))
+        ) {
+          matched.push({
+            id: s.id,
+            type: 'stakeholder',
+            title: s.name,
+            description: `${s.role}, ${s.function}`,
+            url: '/stakeholders',
+            metadata: `${Math.round(s.responseRate * 100)}% response rate`,
+          });
+        }
+      }
+
+      return matched.slice(0, 20);
+    },
+    [prds, stakeholders]
+  );
+
+  const getRecentItems = useCallback((): SearchResult[] => {
+    const sorted = [...prds].sort(
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+    return sorted.slice(0, 5).map((prd) => ({
+      id: prd.id,
+      type: 'prd' as const,
+      title: prd.title,
+      description: prd.description,
+      url: `/prds/${prd.id}`,
+      metadata: `Updated ${formatRelativeDate(prd.updatedAt)}`,
+    }));
+  }, [prds]);
 
   useEffect(() => {
     if (open && inputRef.current) {
@@ -38,7 +115,6 @@ export default function GlobalSearch({ open, onClose }: GlobalSearchProps) {
 
   useEffect(() => {
     if (query.length > 0) {
-      // Simulate search with debounce
       const timer = setTimeout(() => {
         setResults(performSearch(query));
         setSelectedIndex(0);
@@ -47,7 +123,7 @@ export default function GlobalSearch({ open, onClose }: GlobalSearchProps) {
     } else {
       setResults(getRecentItems());
     }
-  }, [query]);
+  }, [query, performSearch, getRecentItems]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
@@ -182,68 +258,18 @@ export default function GlobalSearch({ open, onClose }: GlobalSearchProps) {
   );
 }
 
-function performSearch(query: string): SearchResult[] {
-  const mockResults: SearchResult[] = [
-    {
-      id: 'prd-1',
-      type: 'prd',
-      title: 'Promo Code Error Handling Enhancement',
-      description: 'Improve promo code validation and error messaging',
-      url: '/prds/prd-1',
-      metadata: 'Last updated 2 days ago',
-    },
-    {
-      id: 'prd-2',
-      type: 'prd',
-      title: 'User Dashboard Redesign',
-      description: 'Modernize user dashboard with improved data visualization',
-      url: '/prds/prd-2',
-      metadata: 'Last updated 5 days ago',
-    },
-    {
-      id: 'stakeholder-1',
-      type: 'stakeholder',
-      title: 'Sarah Chen',
-      description: 'Engineering Lead, Payments',
-      url: '/stakeholders',
-      metadata: '87% response rate',
-    },
-    {
-      id: 'section-1',
-      type: 'section',
-      title: 'Technical Approach - Promo Code Enhancement',
-      description: 'Architecture and implementation approach for promo code validation',
-      url: '/prds/prd-1',
-      metadata: '70% complete',
-    },
-  ];
-
-  return mockResults.filter(
-    (result) =>
-      result.title.toLowerCase().includes(query.toLowerCase()) ||
-      result.description.toLowerCase().includes(query.toLowerCase())
-  );
-}
-
-function getRecentItems(): SearchResult[] {
-  return [
-    {
-      id: 'recent-1',
-      type: 'prd',
-      title: 'Promo Code Error Handling Enhancement',
-      description: 'Improve promo code validation and error messaging',
-      url: '/prds/prd-1',
-      metadata: 'Viewed 5 minutes ago',
-    },
-    {
-      id: 'recent-2',
-      type: 'stakeholder',
-      title: 'Sarah Chen',
-      description: 'Engineering Lead, Payments',
-      url: '/stakeholders',
-      metadata: 'Viewed today',
-    },
-  ];
+function formatRelativeDate(dateStr: string): string {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diffMs = now - then;
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 30) return `${diffDays}d ago`;
+  return new Date(dateStr).toLocaleDateString();
 }
 
 // Hook to set up global keyboard shortcut

@@ -32,8 +32,7 @@ export default function AddStakeholderModal({ open, onClose }: AddStakeholderMod
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would add the stakeholder to the context/API
-    console.log('Adding stakeholder:', { name, email, role, function: func });
+    // TODO: In a real app, this would add the stakeholder to the context/API
     onClose();
     // Reset form
     setName('');

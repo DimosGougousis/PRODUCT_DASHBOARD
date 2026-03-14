@@ -39,8 +39,8 @@ export function SnapshotExportButton({ productId, pillars }: SnapshotExportButto
     //   body: JSON.stringify({ format, pillars }),
     // });
     
-    console.log('TODO: Export', { productId, format, pillars });
-    
+    // TODO: Implement export API call
+
     setTimeout(() => setIsExporting(false), 1000);
   };
 

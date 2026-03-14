@@ -182,8 +182,7 @@ export default function PRDDetail() {
                 section={section}
                 prdTitle={prd.title}
                 onUpdate={handleSectionUpdate}
-                onUpdateOrchestrator={(sectionId, orchestrator) => {
-                  console.log('Orchestrator update for section:', sectionId, orchestrator);
+                onUpdateOrchestrator={(_sectionId, _orchestrator) => {
                   // TODO: Store orchestrator data in PRD context
                 }}
               />

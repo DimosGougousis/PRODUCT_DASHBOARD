@@ -19,17 +19,17 @@ export function SprintRetrospectiveSummary({ metrics, isLoading }: SprintRetrosp
   const getMoodColor = (mood: string): string => {
     switch (mood) {
       case 'great':
-        return 'bg-green-100 text-green-700';
+        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
       case 'good':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
       case 'neutral':
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-foreground';
       case 'challenging':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
       case 'difficult':
-        return 'bg-red-100 text-red-700';
+        return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-foreground';
     }
   };
 
@@ -40,7 +40,7 @@ export function SprintRetrospectiveSummary({ metrics, isLoading }: SprintRetrosp
           <CardTitle className="text-sm font-medium">Team Health</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -80,7 +80,7 @@ export function SprintRetrospectiveSummary({ metrics, isLoading }: SprintRetrosp
         {recentRetro && (
           <div className="pt-3 border-t">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-500">Latest Retro: {recentRetro.sprintName}</span>
+              <span className="text-xs text-muted-foreground">Latest Retro: {recentRetro.sprintName}</span>
               <Badge className={`text-xs ${getMoodColor(recentRetro.teamMood)}`}>
                 {recentRetro.teamMood}
               </Badge>
@@ -93,15 +93,15 @@ export function SprintRetrospectiveSummary({ metrics, isLoading }: SprintRetrosp
                   {item.status === 'done' ? (
                     <CheckCircle2 className="w-3 h-3 text-green-500" />
                   ) : (
-                    <Circle className="w-3 h-3 text-gray-400" />
+                    <Circle className="w-3 h-3 text-muted-foreground" />
                   )}
-                  <span className={item.status === 'done' ? 'text-gray-400 line-through' : 'text-gray-700'}>
+                  <span className={item.status === 'done' ? 'text-muted-foreground line-through' : 'text-foreground'}>
                     {item.description}
                   </span>
                 </div>
               ))}
               {recentRetro.actionItems.length > 2 && (
-                <div className="text-xs text-gray-500 pl-5">
+                <div className="text-xs text-muted-foreground pl-5">
                   +{recentRetro.actionItems.length - 2} more
                 </div>
               )}

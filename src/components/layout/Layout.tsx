@@ -21,6 +21,16 @@ import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import GlobalSearch, { useGlobalSearch } from '@/components/GlobalSearch';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useBreadcrumbs } from '@/hooks/useBreadcrumbs';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 interface LayoutProps {
   children: ReactNode;
@@ -71,6 +81,9 @@ function ThemeToggle() {
 export default function Layout({ children, title, subtitle, subNav }: LayoutProps) {
   const location = useLocation();
   const { isOpen, setIsOpen } = useGlobalSearch();
+  const breadcrumbs = useBreadcrumbs();
+
+  useDocumentTitle(title || '');
 
   const navItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -213,6 +226,35 @@ export default function Layout({ children, title, subtitle, subNav }: LayoutProp
         <nav className="bg-card border-b sticky top-16 z-40">
           <div className="container mx-auto px-4">{subNav}</div>
         </nav>
+      )}
+
+      {/* Breadcrumbs */}
+      {breadcrumbs.length > 1 && (
+        <div className="bg-card border-b">
+          <div className="container mx-auto px-4 py-2">
+            <Breadcrumb>
+              <BreadcrumbList>
+                {breadcrumbs.map((crumb, index) => {
+                  const isLast = index === breadcrumbs.length - 1;
+                  return (
+                    <BreadcrumbItem key={crumb.path}>
+                      {isLast ? (
+                        <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                      ) : (
+                        <>
+                          <BreadcrumbLink asChild>
+                            <Link to={crumb.path}>{crumb.label}</Link>
+                          </BreadcrumbLink>
+                          <BreadcrumbSeparator />
+                        </>
+                      )}
+                    </BreadcrumbItem>
+                  );
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </div>
       )}
 
       {/* Page Header if title is provided */}

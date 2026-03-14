@@ -47,8 +47,8 @@ export default function FinancialPage() {
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${
-              Number(budgetVariance) > 5 ? 'text-red-600' : 
-              Number(budgetVariance) < -5 ? 'text-green-600' : 'text-gray-600'
+              Number(budgetVariance) > 5 ? 'text-red-600' :
+              Number(budgetVariance) < -5 ? 'text-green-600' : 'text-muted-foreground'
             }`}>
               {isLoading ? '-' : `${Number(budgetVariance) > 0 ? '+' : ''}${budgetVariance}%`}
             </div>
@@ -113,10 +113,10 @@ export default function FinancialPage() {
               <div className="text-2xl font-bold">
                 ${(metrics?.budget.breakdown.personnel || 0).toLocaleString()}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {((metrics?.budget.breakdown.personnel || 0) / (metrics?.budget.totalBudget || 1) * 100).toFixed(0)}% of budget
               </p>
-              <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div className="mt-2 w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full"
                   style={{ width: `${((metrics?.budget.breakdown.personnel || 0) / (metrics?.budget.totalBudget || 1) * 100)}%` }}
@@ -129,10 +129,10 @@ export default function FinancialPage() {
               <div className="text-2xl font-bold">
                 ${(metrics?.budget.breakdown.infrastructure || 0).toLocaleString()}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {((metrics?.budget.breakdown.infrastructure || 0) / (metrics?.budget.totalBudget || 1) * 100).toFixed(0)}% of budget
               </p>
-              <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div className="mt-2 w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
                   style={{ width: `${((metrics?.budget.breakdown.infrastructure || 0) / (metrics?.budget.totalBudget || 1) * 100)}%` }}
@@ -145,10 +145,10 @@ export default function FinancialPage() {
               <div className="text-2xl font-bold">
                 ${(metrics?.budget.breakdown.tools || 0).toLocaleString()}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {((metrics?.budget.breakdown.tools || 0) / (metrics?.budget.totalBudget || 1) * 100).toFixed(0)}% of budget
               </p>
-              <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div className="mt-2 w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-purple-500 h-2 rounded-full"
                   style={{ width: `${((metrics?.budget.breakdown.tools || 0) / (metrics?.budget.totalBudget || 1) * 100)}%` }}

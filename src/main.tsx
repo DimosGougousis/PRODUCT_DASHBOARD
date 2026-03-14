@@ -6,7 +6,6 @@ import "./index.css";
 if (typeof localStorage !== 'undefined') {
   try {
     localStorage.removeItem('prd-agent-data');
-    console.log("Cleared old localStorage data");
   } catch (e) {
     console.error("Could not clear localStorage:", e);
   }
@@ -16,11 +15,9 @@ const rootElement = document.getElementById("root");
 if (!rootElement) {
   console.error("Root element not found");
 } else {
-  console.log("Mounting React app...");
   try {
     const root = createRoot(rootElement);
     root.render(<App />);
-    console.log("React app mounted successfully");
   } catch (error) {
     console.error("Failed to mount React app:", error);
     // Show error in the DOM

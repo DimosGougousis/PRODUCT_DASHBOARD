@@ -25,20 +25,20 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
       case 'non_compliant':
         return <AlertTriangle className="w-4 h-4 text-red-500" />;
       default:
-        return <Shield className="w-4 h-4 text-gray-400" />;
+        return <Shield className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'compliant':
-        return 'bg-green-100 text-green-700';
+        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
       case 'non_compliant':
-        return 'bg-red-100 text-red-700';
+        return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-foreground';
     }
   };
 
@@ -54,7 +54,7 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
           <CardTitle className="text-sm font-medium">Compliance</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-24 bg-gray-100 animate-pulse rounded" />
+          <div className="h-24 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -65,7 +65,7 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-medium flex items-center justify-between">
           <span>Compliance</span>
-          <Badge className={overallScore >= 80 ? 'bg-green-100 text-green-700' : overallScore >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}>
+          <Badge className={overallScore >= 80 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : overallScore >= 60 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}>
             {overallScore}%
           </Badge>
         </CardTitle>
@@ -77,7 +77,7 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
             <div key={framework.id} className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
                 {getStatusIcon(framework.status)}
-                <span className="text-gray-700">{framework.name}</span>
+                <span className="text-foreground">{framework.name}</span>
               </div>
               <Badge variant="outline" className={`text-xs ${getStatusColor(framework.status)}`}>
                 {framework.score}%
@@ -89,7 +89,7 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
         {/* Findings Summary */}
         <div className="pt-3 border-t">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Open Findings</span>
+            <span className="text-muted-foreground">Open Findings</span>
             <span className={`font-medium ${openFindings > 0 ? 'text-red-600' : 'text-green-600'}`}>
               {openFindings}
             </span>
@@ -99,7 +99,7 @@ export function ComplianceStatusWidget({ metrics, isLoading }: ComplianceStatusW
         {/* Data Privacy */}
         <div className="pt-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">GDPR Requests</span>
+            <span className="text-muted-foreground">GDPR Requests</span>
             <span className="font-medium">
               {metrics?.dataPrivacy.dataSubjectRequests.pending ?? 0} pending
             </span>

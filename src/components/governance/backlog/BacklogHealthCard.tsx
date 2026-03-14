@@ -29,7 +29,7 @@ export function BacklogHealthCard({ metrics, isLoading }: BacklogHealthCardProps
           <CardTitle className="text-sm font-medium">Backlog Health</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -49,11 +49,11 @@ export function BacklogHealthCard({ metrics, isLoading }: BacklogHealthCardProps
         {/* Readiness */}
         <div className="mb-4">
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-gray-600">Ready for Development</span>
+            <span className="text-muted-foreground">Ready for Development</span>
             <span className="font-medium">{readyForDev} / {totalIssues}</span>
           </div>
           <Progress value={readinessPercent} className="h-2" />
-          <div className="flex justify-between text-xs mt-1 text-gray-500">
+          <div className="flex justify-between text-xs mt-1 text-muted-foreground">
             <span>{readinessPercent}% ready</span>
             <span>{needsRefinement} need refinement</span>
           </div>

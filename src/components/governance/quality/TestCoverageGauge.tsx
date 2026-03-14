@@ -31,9 +31,9 @@ export function TestCoverageGauge({ metrics, isLoading }: TestCoverageGaugeProps
   };
 
   const gateConfig = {
-    passed: { label: 'Passed', color: 'bg-green-100 text-green-700' },
-    warning: { label: 'Warning', color: 'bg-yellow-100 text-yellow-700' },
-    failed: { label: 'Failed', color: 'bg-red-100 text-red-700' },
+    passed: { label: 'Passed', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+    warning: { label: 'Warning', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
+    failed: { label: 'Failed', color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
   };
 
   const gateInfo = gateConfig[qualityGate];
@@ -50,7 +50,7 @@ export function TestCoverageGauge({ metrics, isLoading }: TestCoverageGaugeProps
           <CardTitle className="text-sm font-medium">Test Coverage</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -103,13 +103,13 @@ export function TestCoverageGauge({ metrics, isLoading }: TestCoverageGaugeProps
         {/* Breakdown */}
         <div className="space-y-1 text-xs">
           <div className="flex justify-between">
-            <span className="text-gray-500">Line Coverage</span>
+            <span className="text-muted-foreground">Line Coverage</span>
             <span className={`font-medium ${getColor(lineCoverage)}`}>
               {lineCoverage.toFixed(1)}%
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Branch Coverage</span>
+            <span className="text-muted-foreground">Branch Coverage</span>
             <span className={`font-medium ${getColor(branchCoverage)}`}>
               {branchCoverage.toFixed(1)}%
             </span>
@@ -119,7 +119,7 @@ export function TestCoverageGauge({ metrics, isLoading }: TestCoverageGaugeProps
         {/* Technical Debt */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Technical Debt</span>
+            <span className="text-muted-foreground">Technical Debt</span>
             <span className="font-medium">{metrics?.technicalDebt ?? '0min'}</span>
           </div>
         </div>

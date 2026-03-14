@@ -26,9 +26,9 @@ export function GovernanceDashboardLayout({
   topBar,
 }: GovernanceDashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Top Bar */}
-      <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
+      <div className="sticky top-0 z-10 bg-card border-b shadow-sm">
         {topBar}
       </div>
       

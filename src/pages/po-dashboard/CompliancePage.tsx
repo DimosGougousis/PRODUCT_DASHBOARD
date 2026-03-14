@@ -19,7 +19,7 @@ export default function CompliancePage() {
       case 'non_compliant':
         return <XCircle className="h-5 w-5 text-red-500" />;
       default:
-        return <Shield className="h-5 w-5 text-gray-500" />;
+        return <Shield className="h-5 w-5 text-muted-foreground" />;
     }
   };
 
@@ -118,9 +118,9 @@ export default function CompliancePage() {
                     <h4 className="font-semibold">{framework.name}</h4>
                   </div>
                   <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    framework.status === 'compliant' ? 'bg-green-100 text-green-800' :
-                    framework.status === 'partial' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
+                    framework.status === 'compliant' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
+                    framework.status === 'partial' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' :
+                    'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                   }`}>
                     {framework.status.replace('_', ' ')}
                   </span>
@@ -131,7 +131,7 @@ export default function CompliancePage() {
                     <span>Score</span>
                     <span className="font-medium">{framework.score}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className={`h-2 rounded-full ${
                         framework.score >= 90 ? 'bg-green-500' :
@@ -144,15 +144,15 @@ export default function CompliancePage() {
 
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Controls Passed:</span>
+                    <span className="text-muted-foreground">Controls Passed:</span>
                     <span>{framework.controlsPassed}/{framework.controlsTotal}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Last Assessment:</span>
+                    <span className="text-muted-foreground">Last Assessment:</span>
                     <span>{framework.lastAssessment}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Next Review:</span>
+                    <span className="text-muted-foreground">Next Review:</span>
                     <span>{framework.nextReview}</span>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function CompliancePage() {
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <div className="w-24 font-medium text-red-600">Critical</div>
-              <div className="flex-1 bg-gray-100 rounded-full h-8 overflow-hidden">
+              <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
                 <div
                   className="bg-red-500 h-full flex items-center justify-end px-2 text-white text-sm font-medium"
                   style={{ width: `${Math.min((metrics?.securityFindings.critical || 0) * 10, 100)}%` }}
@@ -187,14 +187,14 @@ export default function CompliancePage() {
                   {metrics?.securityFindings.critical || 0}
                 </div>
               </div>
-              <div className="w-20 text-sm text-gray-500">
+              <div className="w-20 text-sm text-muted-foreground">
                 Fix immediately
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="w-24 font-medium text-orange-600">High</div>
-              <div className="flex-1 bg-gray-100 rounded-full h-8 overflow-hidden">
+              <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
                 <div
                   className="bg-orange-500 h-full flex items-center justify-end px-2 text-white text-sm font-medium"
                   style={{ width: `${Math.min((metrics?.securityFindings.high || 0) * 10, 100)}%` }}
@@ -202,14 +202,14 @@ export default function CompliancePage() {
                   {metrics?.securityFindings.high || 0}
                 </div>
               </div>
-              <div className="w-20 text-sm text-gray-500">
+              <div className="w-20 text-sm text-muted-foreground">
                 Fix within 7 days
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="w-24 font-medium text-yellow-600">Medium</div>
-              <div className="flex-1 bg-gray-100 rounded-full h-8 overflow-hidden">
+              <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
                 <div
                   className="bg-yellow-500 h-full flex items-center justify-end px-2 text-white text-sm font-medium"
                   style={{ width: `${Math.min((metrics?.securityFindings.medium || 0) * 5, 100)}%` }}
@@ -217,14 +217,14 @@ export default function CompliancePage() {
                   {metrics?.securityFindings.medium || 0}
                 </div>
               </div>
-              <div className="w-20 text-sm text-gray-500">
+              <div className="w-20 text-sm text-muted-foreground">
                 Fix within 30 days
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="w-24 font-medium text-blue-600">Low</div>
-              <div className="flex-1 bg-gray-100 rounded-full h-8 overflow-hidden">
+              <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
                 <div
                   className="bg-blue-500 h-full flex items-center justify-end px-2 text-white text-sm font-medium"
                   style={{ width: `${Math.min((metrics?.securityFindings.low || 0) * 3, 100)}%` }}
@@ -232,7 +232,7 @@ export default function CompliancePage() {
                   {metrics?.securityFindings.low || 0}
                 </div>
               </div>
-              <div className="w-20 text-sm text-gray-500">
+              <div className="w-20 text-sm text-muted-foreground">
                 Fix within 90 days
               </div>
             </div>

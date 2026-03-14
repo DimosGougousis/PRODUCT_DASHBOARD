@@ -56,7 +56,7 @@ export function NPSCsatTrendChart({ metrics, isLoading }: NPSCsatTrendChartProps
           <CardTitle className="text-sm font-medium">NPS & CSAT Trend</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-40 bg-gray-100 animate-pulse rounded" />
+          <div className="h-40 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -103,20 +103,20 @@ export function NPSCsatTrendChart({ metrics, isLoading }: NPSCsatTrendChartProps
         {/* Current Values */}
         <div className="mt-3 grid grid-cols-2 gap-4">
           <div className="text-center p-2 bg-blue-50 rounded">
-            <span className="text-xs text-gray-500 block">NPS Score</span>
+            <span className="text-xs text-muted-foreground block">NPS Score</span>
             <span className={`text-xl font-bold ${getNpsColor(currentNps)}`}>
               {currentNps}
             </span>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {nps?.promoters ?? 0} promoters • {nps?.detractors ?? 0} detractors
             </div>
           </div>
           <div className="text-center p-2 bg-green-50 rounded">
-            <span className="text-xs text-gray-500 block">CSAT Score</span>
+            <span className="text-xs text-muted-foreground block">CSAT Score</span>
             <span className={`text-xl font-bold ${getCsatColor(currentCsat)}`}>
               {currentCsat}%
             </span>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {csat?.satisfied ?? 0} satisfied • {csat?.totalResponses ?? 0} responses
             </div>
           </div>

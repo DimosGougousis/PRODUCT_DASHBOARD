@@ -37,7 +37,7 @@ export function CostPerStoryPoint({ metrics, isLoading }: CostPerStoryPointProps
           <CardTitle className="text-sm font-medium">Cost Efficiency</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -83,7 +83,7 @@ export function CostPerStoryPoint({ metrics, isLoading }: CostPerStoryPointProps
         <div className="mt-3 space-y-1">
           {sprintCosts.slice(-3).map((sprint) => (
             <div key={sprint.sprintName} className="flex justify-between text-xs">
-              <span className="text-gray-500">{sprint.sprintName}</span>
+              <span className="text-muted-foreground">{sprint.sprintName}</span>
               <div className="flex gap-3">
                 <span>{sprint.storyPointsCompleted} pts</span>
                 <span className="font-medium w-16 text-right">
@@ -97,7 +97,7 @@ export function CostPerStoryPoint({ metrics, isLoading }: CostPerStoryPointProps
         {/* ROI */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Projected ROI</span>
+            <span className="text-muted-foreground">Projected ROI</span>
             <span className={`font-medium ${(metrics?.roi ?? 0) > 100 ? 'text-green-600' : 'text-yellow-600'}`}>
               {metrics?.roi ?? 0}%
             </span>

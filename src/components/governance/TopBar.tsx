@@ -37,16 +37,16 @@ export function TopBar({
   ];
   
   return (
-    <div className="bg-white border-b px-6 py-4 sticky top-0 z-10">
+    <div className="bg-card border-b px-6 py-4 sticky top-0 z-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-gray-900">PO Governance</h1>
+          <h1 className="text-xl font-bold text-foreground">PO Governance</h1>
           
           {/* Product Selector */}
           <select
             value={selectedProduct || ''}
             onChange={(e) => onProductChange(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-1.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="border border-border rounded-md px-3 py-1.5 text-sm bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select Product...</option>
             {products.map((p) => (
@@ -58,7 +58,7 @@ export function TopBar({
         <div className="flex items-center gap-4">
           {/* Last Updated */}
           {lastUpdated && (
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               Last updated: {lastUpdated.toLocaleTimeString()}
             </span>
           )}

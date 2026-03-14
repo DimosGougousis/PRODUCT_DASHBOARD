@@ -23,7 +23,7 @@ export function AuditTrailStatus({ metrics, isLoading }: AuditTrailStatusProps) 
           <CardTitle className="text-sm font-medium">Security & Audit</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-24 bg-gray-100 animate-pulse rounded" />
+          <div className="h-24 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -38,18 +38,18 @@ export function AuditTrailStatus({ metrics, isLoading }: AuditTrailStatusProps) 
         {/* Vulnerability Scan */}
         <div className="mb-3">
           <div className="flex justify-between items-center text-sm mb-1">
-            <span className="text-gray-600">Vulnerabilities</span>
+            <span className="text-muted-foreground">Vulnerabilities</span>
             <div className="flex gap-2">
               {security?.vulnerabilityScans.critical ? (
                 <Badge variant="destructive" className="text-xs">
                   {security.vulnerabilityScans.critical} Critical
                 </Badge>
               ) : (
-                <Badge className="bg-green-100 text-green-700 text-xs">Clean</Badge>
+                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs">Clean</Badge>
               )}
             </div>
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             Last scan: {security?.vulnerabilityScans.lastScanDate || 'N/A'}
           </div>
         </div>
@@ -57,12 +57,12 @@ export function AuditTrailStatus({ metrics, isLoading }: AuditTrailStatusProps) 
         {/* Penetration Test */}
         <div className="mb-3">
           <div className="flex justify-between items-center text-sm mb-1">
-            <span className="text-gray-600">Pen Test</span>
+            <span className="text-muted-foreground">Pen Test</span>
             <span className="text-xs">
               {security?.penetrationTests.findings ?? 0} findings
             </span>
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             Next: {security?.penetrationTests.nextTestDate || 'N/A'}
           </div>
         </div>
@@ -70,7 +70,7 @@ export function AuditTrailStatus({ metrics, isLoading }: AuditTrailStatusProps) 
         {/* Audit Trail */}
         <div className="pt-3 border-t">
           <div className="flex justify-between items-center text-sm mb-2">
-            <span className="text-gray-600 flex items-center gap-1">
+            <span className="text-muted-foreground flex items-center gap-1">
               <FileText className="w-3 h-3" />
               Audit Events
             </span>

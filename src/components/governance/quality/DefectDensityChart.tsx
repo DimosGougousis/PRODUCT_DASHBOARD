@@ -31,7 +31,7 @@ export function DefectDensityChart({ metrics, isLoading }: DefectDensityChartPro
   const trendConfig = {
     improving: { icon: TrendingDown, color: 'text-green-600', label: 'Improving' },
     worsening: { icon: TrendingUp, color: 'text-red-600', label: 'Worsening' },
-    stable: { icon: Minus, color: 'text-gray-500', label: 'Stable' },
+    stable: { icon: Minus, color: 'text-muted-foreground', label: 'Stable' },
   };
 
   const trendInfo = trendConfig[trend];
@@ -44,7 +44,7 @@ export function DefectDensityChart({ metrics, isLoading }: DefectDensityChartPro
           <CardTitle className="text-sm font-medium">Defect Density</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -81,7 +81,7 @@ export function DefectDensityChart({ metrics, isLoading }: DefectDensityChartPro
             <span className="text-sm font-bold">{metrics?.minorIssues ?? 0}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-medium">Info</span>
+            <span className="text-xs text-muted-foreground font-medium">Info</span>
             <span className="text-sm font-bold">{metrics?.infoIssues ?? 0}</span>
           </div>
         </div>
@@ -89,7 +89,7 @@ export function DefectDensityChart({ metrics, isLoading }: DefectDensityChartPro
         {/* Total */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500">Total Bugs</span>
+            <span className="text-xs text-muted-foreground">Total Bugs</span>
             <span className="text-sm font-bold">{total}</span>
           </div>
         </div>
@@ -97,7 +97,7 @@ export function DefectDensityChart({ metrics, isLoading }: DefectDensityChartPro
         {/* Code Smells */}
         <div className="mt-2 pt-2 border-t">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500">Code Smells</span>
+            <span className="text-xs text-muted-foreground">Code Smells</span>
             <span className="text-sm font-bold">{metrics?.codeSmells ?? 0}</span>
           </div>
         </div>

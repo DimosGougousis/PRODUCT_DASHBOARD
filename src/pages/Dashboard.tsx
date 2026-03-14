@@ -5,15 +5,10 @@ import PRDChart from '@/components/dashboard/PRDChart';
 import PRDCard from '@/components/prd/PRDCard';
 import { usePRDs } from '@/context/PRDContext';
 import { FileText, Clock, CheckCircle2, AlertCircle, TrendingUp, Users, Loader2 } from 'lucide-react';
-import { useEffect } from 'react';
 
 const Dashboard = () => {
   const { prds, isLoading } = usePRDs();
   
-  useEffect(() => {
-    console.log('Dashboard mounted, isLoading:', isLoading, 'prds count:', prds?.length);
-  }, [isLoading, prds]);
-
   const metrics = {
     totalPRDs: prds.length,
     inProgress: prds.filter((p) => p.status === 'waiting' || p.status === 'research').length,

@@ -113,7 +113,7 @@ export default function BacklogHealthPage() {
                   <div key={key} className="flex items-center justify-between">
                     <span className="text-sm capitalize">{key}</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full ${
                             score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
@@ -136,7 +136,7 @@ export default function BacklogHealthPage() {
                   <div key={key} className="flex items-center justify-between">
                     <span className="text-sm capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full ${
                             score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-yellow-500' : 'bg-red-500'

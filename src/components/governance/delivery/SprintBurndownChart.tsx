@@ -46,7 +46,7 @@ export function SprintBurndownChart({
           <CardTitle className="text-sm font-medium">Sprint Burndown</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 bg-gray-100 animate-pulse rounded" />
+          <div className="h-48 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -60,7 +60,7 @@ export function SprintBurndownChart({
           <CardTitle className="text-sm font-medium">Sprint Burndown</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 bg-gray-50 rounded flex items-center justify-center text-sm text-gray-400">
+          <div className="h-48 bg-muted rounded flex items-center justify-center text-sm text-muted-foreground">
             No active sprint
           </div>
         </CardContent>
@@ -83,13 +83,13 @@ export function SprintBurndownChart({
           </CardTitle>
           <Badge 
             variant={isOnTrack ? 'default' : 'destructive'}
-            className={`text-xs ${isOnTrack ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}`}
+            className={`text-xs ${isOnTrack ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30' : ''}`}
           >
             {isOnTrack ? 'On Track' : 'At Risk'}
           </Badge>
         </div>
         {goal && (
-          <p className="text-xs text-gray-500 truncate">{goal}</p>
+          <p className="text-xs text-muted-foreground truncate">{goal}</p>
         )}
       </CardHeader>
       <CardContent>
@@ -136,8 +136,8 @@ export function SprintBurndownChart({
         
         {/* Stats */}
         <div className="mt-3 pt-3 border-t flex items-center justify-between text-xs">
-          <span className="text-gray-500">Total scope: <span className="font-medium">{totalPoints} pts</span></span>
-          <span className="text-gray-500">
+          <span className="text-muted-foreground">Total scope: <span className="font-medium">{totalPoints} pts</span></span>
+          <span className="text-muted-foreground">
             Remaining: <span className="font-medium">{data[data.length - 1]?.remaining || 0} pts</span>
           </span>
         </div>

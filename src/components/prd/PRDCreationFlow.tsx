@@ -93,7 +93,6 @@ export default function PRDCreationFlow({
     const existingTasks = JSON.parse(localStorage.getItem('kanban-tasks') || '[]');
     localStorage.setItem('kanban-tasks', JSON.stringify([...existingTasks, ...tasks]));
 
-    console.log(`Created ${tasks.length} tasks for PRD`, tasks);
   };
 
   const handleCloseWizard = () => {

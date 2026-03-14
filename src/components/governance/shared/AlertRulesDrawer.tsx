@@ -58,11 +58,11 @@ export function AlertRulesDrawer({ productId, rules, onSave }: AlertRulesDrawerP
         
         <div className="p-4 space-y-4">
           {/* TODO: Implement rule list */}
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-muted-foreground">
             Product: {productId || 'Not selected'}
           </div>
           
-          <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-500">
+          <div className="p-4 bg-muted rounded-lg text-sm text-muted-foreground">
             TODO: Alert rule configuration (Stage 3)
             <ul className="mt-2 list-disc list-inside text-xs">
               <li>Add/edit/delete rules</li>
@@ -73,7 +73,7 @@ export function AlertRulesDrawer({ productId, rules, onSave }: AlertRulesDrawerP
           </div>
           
           {/* TODO: Add rule form */}
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-muted-foreground">
             Current rules: {rules?.length || 0}
           </div>
         </div>

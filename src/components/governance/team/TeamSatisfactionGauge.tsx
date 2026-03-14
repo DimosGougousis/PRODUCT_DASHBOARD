@@ -45,7 +45,7 @@ export function TeamSatisfactionGauge({ metrics, isLoading }: TeamSatisfactionGa
           <CardTitle className="text-sm font-medium">Team Satisfaction</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -69,7 +69,7 @@ export function TeamSatisfactionGauge({ metrics, isLoading }: TeamSatisfactionGa
             <span className={`text-3xl font-bold ${getMoodColor(overall)}`}>
               {overall.toFixed(1)}
             </span>
-            <span className="text-gray-400 text-sm">/10</span>
+            <span className="text-muted-foreground text-sm">/10</span>
           </div>
         </div>
 
@@ -78,7 +78,7 @@ export function TeamSatisfactionGauge({ metrics, isLoading }: TeamSatisfactionGa
           {categories.map((cat) => (
             <div key={cat.label}>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-600">{cat.label}</span>
+                <span className="text-muted-foreground">{cat.label}</span>
                 <span className="font-medium">{cat.score.toFixed(1)}</span>
               </div>
               <Progress value={cat.score * 10} className="h-1.5" />
@@ -87,7 +87,7 @@ export function TeamSatisfactionGauge({ metrics, isLoading }: TeamSatisfactionGa
         </div>
 
         {/* Last Survey */}
-        <div className="mt-3 pt-3 border-t text-xs text-gray-500">
+        <div className="mt-3 pt-3 border-t text-xs text-muted-foreground">
           Last survey: {metrics?.lastSurveyDate || 'N/A'}
         </div>
       </CardContent>

@@ -29,7 +29,7 @@ export function SecurityFindingsBadge({ metrics, isLoading }: SecurityFindingsBa
     return (
       <Card>
         <CardContent className="p-4">
-          <div className="h-16 bg-gray-100 animate-pulse rounded" />
+          <div className="h-16 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -56,9 +56,9 @@ export function SecurityFindingsBadge({ metrics, isLoading }: SecurityFindingsBa
             <div className="flex items-center gap-2">
               <p className="text-sm font-medium">Security Findings</p>
               <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${
-                securityRating <= 2 ? 'bg-green-100 text-green-700' :
-                securityRating === 3 ? 'bg-yellow-100 text-yellow-700' :
-                'bg-red-100 text-red-700'
+                securityRating <= 2 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                securityRating === 3 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
+                'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
               }`}>
                 {ratingLetter}
               </span>
@@ -66,13 +66,13 @@ export function SecurityFindingsBadge({ metrics, isLoading }: SecurityFindingsBa
 
             {/* Counts */}
             <div className="flex gap-3 mt-1 text-xs">
-              <span className={vulnerabilities > 0 ? 'text-red-600 font-bold' : 'text-gray-500'}>
+              <span className={vulnerabilities > 0 ? 'text-red-600 font-bold' : 'text-muted-foreground'}>
                 {vulnerabilities} Vulnerabilities
               </span>
             </div>
 
             {/* Severity breakdown */}
-            <div className="flex gap-2 mt-1 text-xs text-gray-500">
+            <div className="flex gap-2 mt-1 text-xs text-muted-foreground">
               <span>{critical} Critical</span>
               <span>•</span>
               <span>{major} Major</span>

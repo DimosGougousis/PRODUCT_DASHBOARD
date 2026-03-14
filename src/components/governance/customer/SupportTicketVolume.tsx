@@ -45,7 +45,7 @@ export function SupportTicketVolume({ metrics, isLoading }: SupportTicketVolumeP
           <CardTitle className="text-sm font-medium">Support Tickets</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -64,17 +64,17 @@ export function SupportTicketVolume({ metrics, isLoading }: SupportTicketVolumeP
       <CardContent>
         {/* Summary Stats */}
         <div className="grid grid-cols-3 gap-2 mb-3">
-          <div className="text-center p-2 bg-gray-50 rounded">
+          <div className="text-center p-2 bg-muted rounded">
             <span className="text-lg font-bold">{support?.totalTickets ?? 0}</span>
-            <span className="text-xs text-gray-500 block">Total</span>
+            <span className="text-xs text-muted-foreground block">Total</span>
           </div>
           <div className="text-center p-2 bg-green-50 rounded">
             <span className="text-lg font-bold">{support?.resolvedThisWeek ?? 0}</span>
-            <span className="text-xs text-gray-500 block">This Week</span>
+            <span className="text-xs text-muted-foreground block">This Week</span>
           </div>
           <div className="text-center p-2 bg-blue-50 rounded">
             <span className="text-lg font-bold">{support?.avgSatisfaction ?? 0}</span>
-            <span className="text-xs text-gray-500 block">Avg Rating</span>
+            <span className="text-xs text-muted-foreground block">Avg Rating</span>
           </div>
         </div>
 
@@ -100,7 +100,7 @@ export function SupportTicketVolume({ metrics, isLoading }: SupportTicketVolumeP
           {priorityData.map((p) => (
             <div key={p.name} className="text-center">
               <span className="font-bold">{p.count}</span>
-              <span className="text-gray-500 block">{p.name}</span>
+              <span className="text-muted-foreground block">{p.name}</span>
             </div>
           ))}
         </div>
@@ -108,7 +108,7 @@ export function SupportTicketVolume({ metrics, isLoading }: SupportTicketVolumeP
         {/* Avg Resolution Time */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Avg Resolution Time</span>
+            <span className="text-muted-foreground">Avg Resolution Time</span>
             <span className="font-medium">{support?.avgResolutionTime ?? 0} hours</span>
           </div>
         </div>

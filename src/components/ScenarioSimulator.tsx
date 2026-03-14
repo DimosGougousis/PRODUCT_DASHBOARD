@@ -274,7 +274,7 @@ export default function ScenarioSimulator({
             Close
           </Button>
           {result && (
-            <Button onClick={() => console.log('Saving scenario...')}>
+            <Button onClick={() => { /* TODO: Implement save scenario */ }}>
               Save Scenario
             </Button>
           )}

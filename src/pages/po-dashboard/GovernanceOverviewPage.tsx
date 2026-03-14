@@ -103,16 +103,16 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case 'excellent':
     case 'on_track':
-      return 'bg-green-100 text-green-800 border-green-200';
+      return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800';
     case 'good':
-      return 'bg-blue-100 text-blue-800 border-blue-200';
+      return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800';
     case 'fair':
-      return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800';
     case 'at_risk':
     case 'poor':
-      return 'bg-red-100 text-red-800 border-red-200';
+      return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800';
     default:
-      return 'bg-gray-100 text-gray-800 border-gray-200';
+      return 'bg-muted text-foreground border-border';
   }
 };
 
@@ -123,7 +123,7 @@ const getTrendIcon = (trend: string) => {
     case 'down':
       return <TrendingDown className="h-4 w-4 text-red-500" />;
     default:
-      return <Clock className="h-4 w-4 text-gray-400" />;
+      return <Clock className="h-4 w-4 text-muted-foreground" />;
   }
 };
 
@@ -148,27 +148,27 @@ export default function GovernanceOverviewPage() {
           <div className="flex items-center gap-8">
             <div className="text-center">
               <div className="text-5xl font-bold text-green-600">82</div>
-              <div className="text-sm text-gray-500">Overall Score</div>
+              <div className="text-sm text-muted-foreground">Overall Score</div>
             </div>
             <div className="flex-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Excellent</span>
-                  <span className="text-sm text-gray-500">2 pillars</span>
+                  <span className="text-sm text-muted-foreground">2 pillars</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Good</span>
-                  <span className="text-sm text-gray-500">4 pillars</span>
+                  <span className="text-sm text-muted-foreground">4 pillars</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Needs Attention</span>
-                  <span className="text-sm text-gray-500">2 pillars</span>
+                  <span className="text-sm text-muted-foreground">2 pillars</span>
                 </div>
               </div>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold">3</div>
-              <div className="text-sm text-gray-500">Active Alerts</div>
+              <div className="text-sm text-muted-foreground">Active Alerts</div>
             </div>
           </div>
         </CardContent>
@@ -184,19 +184,19 @@ export default function GovernanceOverviewPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="p-2 bg-gray-100 rounded-lg">
+                      <div className="p-2 bg-muted rounded-lg">
                         <Icon className="h-5 w-5" />
                       </div>
                       <CardTitle className="text-base">{pillar.name}</CardTitle>
                     </div>
-                    <ArrowRight className="h-4 w-4 text-gray-400" />
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {/* Score */}
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Health Score</span>
+                      <span className="text-sm text-muted-foreground">Health Score</span>
                       <div className="flex items-center gap-2">
                         {getTrendIcon(pillar.trend)}
                         <span className="font-semibold">{pillar.score}%</span>
@@ -216,7 +216,7 @@ export default function GovernanceOverviewPage() {
                     {/* KPI */}
                     <div className="pt-2 border-t">
                       <div className="text-xl font-bold">{pillar.kpis.primary}</div>
-                      <div className="text-xs text-gray-500">{pillar.kpis.secondary}</div>
+                      <div className="text-xs text-muted-foreground">{pillar.kpis.secondary}</div>
                     </div>
 
                     {/* Alert */}
@@ -242,13 +242,13 @@ export default function GovernanceOverviewPage() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link to="/governance/sprint">
-              <Card className="hover:bg-gray-50 cursor-pointer">
+              <Card className="hover:bg-muted cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <Activity className="h-5 w-5 text-blue-500" />
                     <div>
                       <div className="font-medium">Active Sprint</div>
-                      <div className="text-sm text-gray-500">View current sprint progress</div>
+                      <div className="text-sm text-muted-foreground">View current sprint progress</div>
                     </div>
                   </div>
                 </CardContent>
@@ -256,13 +256,13 @@ export default function GovernanceOverviewPage() {
             </Link>
 
             <Link to="/governance/backlog">
-              <Card className="hover:bg-gray-50 cursor-pointer">
+              <Card className="hover:bg-muted cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <ClipboardList className="h-5 w-5 text-purple-500" />
                     <div>
                       <div className="font-medium">Backlog Health</div>
-                      <div className="text-sm text-gray-500">Review stale stories</div>
+                      <div className="text-sm text-muted-foreground">Review stale stories</div>
                     </div>
                   </div>
                 </CardContent>
@@ -270,13 +270,13 @@ export default function GovernanceOverviewPage() {
             </Link>
 
             <Link to="/governance/compliance">
-              <Card className="hover:bg-gray-50 cursor-pointer">
+              <Card className="hover:bg-muted cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <ShieldCheck className="h-5 w-5 text-green-500" />
                     <div>
                       <div className="font-medium">Security</div>
-                      <div className="text-sm text-gray-500">Review open findings</div>
+                      <div className="text-sm text-muted-foreground">Review open findings</div>
                     </div>
                   </div>
                 </CardContent>

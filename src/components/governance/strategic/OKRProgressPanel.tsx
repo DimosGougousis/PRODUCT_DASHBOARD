@@ -35,7 +35,7 @@ export function OKRProgressPanel({ okrs, isLoading }: OKRProgressPanelProps) {
           <CardTitle className="text-sm font-medium">OKR Progress</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-gray-100 animate-pulse rounded" />
+          <div className="h-32 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -51,10 +51,10 @@ export function OKRProgressPanel({ okrs, isLoading }: OKRProgressPanelProps) {
       </CardHeader>
       <CardContent>
         {(!okrs || okrs.length === 0) ? (
-          <div className="text-sm text-gray-500 text-center py-4">
+          <div className="text-sm text-muted-foreground text-center py-4">
             No OKRs configured
             <br />
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-muted-foreground">
               (TODO: Add OKR management UI)
             </span>
           </div>
@@ -68,7 +68,7 @@ export function OKRProgressPanel({ okrs, isLoading }: OKRProgressPanelProps) {
                   return (
                     <div key={idx} className="mb-2">
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-600">{kr.description}</span>
+                        <span className="text-muted-foreground">{kr.description}</span>
                         <span>{kr.current}/{kr.target}</span>
                       </div>
                       <Progress value={progress} className="h-1.5" />

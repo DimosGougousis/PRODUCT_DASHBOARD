@@ -23,8 +23,8 @@ export default function CustomerMetricsPage() {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">NPS Score</CardTitle>
             <div className={`flex items-center ${
-              npsTrend === 'up' ? 'text-green-600' : 
-              npsTrend === 'down' ? 'text-red-600' : 'text-gray-600'
+              npsTrend === 'up' ? 'text-green-600' :
+              npsTrend === 'down' ? 'text-red-600' : 'text-muted-foreground'
             }`}>
               {npsTrend === 'up' ? <TrendingUp className="h-4 w-4" /> : 
                npsTrend === 'down' ? <TrendingDown className="h-4 w-4" /> : 
@@ -111,7 +111,7 @@ export default function CustomerMetricsPage() {
             <div className="text-3xl font-bold text-green-600">
               {isLoading ? '-' : `${metrics?.nps.promoters || 0}%`}
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Score 9-10 • Loyal enthusiasts who will recommend your product
             </p>
             <div className="mt-4 text-sm">
@@ -129,7 +129,7 @@ export default function CustomerMetricsPage() {
             <div className="text-3xl font-bold text-yellow-600">
               {isLoading ? '-' : `${metrics?.nps.passives || 0}%`}
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Score 7-8 • Satisfied but unenthusiastic customers
             </p>
             <div className="mt-4 text-sm">
@@ -147,7 +147,7 @@ export default function CustomerMetricsPage() {
             <div className="text-3xl font-bold text-red-600">
               {isLoading ? '-' : `${metrics?.nps.detractors || 0}%`}
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Score 0-6 • Unhappy customers who can damage your brand
             </p>
             <div className="mt-4 text-sm">
@@ -170,19 +170,19 @@ export default function CustomerMetricsPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      feedback.type === 'promoter' ? 'bg-green-100 text-green-800' :
-                      feedback.type === 'passive' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
+                      feedback.type === 'promoter' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
+                      feedback.type === 'passive' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' :
+                      'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                     }`}>
                       {feedback.type.charAt(0).toUpperCase() + feedback.type.slice(1)}
                     </span>
-                    <span className="text-sm text-gray-500">{feedback.date}</span>
+                    <span className="text-sm text-muted-foreground">{feedback.date}</span>
                   </div>
                   <span className="font-bold">Score: {feedback.score}/10</span>
                 </div>
-                <p className="text-sm text-gray-700">{feedback.comment}</p>
+                <p className="text-sm text-foreground">{feedback.comment}</p>
                 {feedback.source && (
-                  <p className="text-xs text-gray-500 mt-2">Source: {feedback.source}</p>
+                  <p className="text-xs text-muted-foreground mt-2">Source: {feedback.source}</p>
                 )}
               </div>
             ))}

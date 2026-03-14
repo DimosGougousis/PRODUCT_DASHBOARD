@@ -143,10 +143,10 @@ export default function ActiveSprintPage() {
                         <td className="py-2 px-4">
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                             issue.status === 'Done'
-                              ? 'bg-green-100 text-green-800'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
                               : issue.status === 'In Progress'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-gray-100 text-gray-800'
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'bg-muted text-foreground'
                           }`}>
                             {issue.status}
                           </span>
@@ -180,9 +180,9 @@ export default function ActiveSprintPage() {
             {sprint?.teamCapacity?.map((member) => (
               <div key={member.name} className="p-3 border rounded-lg">
                 <p className="font-medium text-sm">{member.name}</p>
-                <p className="text-xs text-gray-500">{member.role}</p>
+                <p className="text-xs text-muted-foreground">{member.role}</p>
                 <div className="mt-2 flex items-center gap-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-blue-500 h-2 rounded-full"
                       style={{ width: `${(member.capacity.used / member.capacity.total) * 100}%` }}

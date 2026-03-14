@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ProjectSelector } from './ProjectSelector';
 import { GovernanceSubNav } from './GovernanceSubNav';
 import Layout from '@/components/layout/Layout';
+import { useGovernanceProject } from '@/hooks/useGovernanceProject';
 
 interface GovernanceLayoutProps {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export function GovernanceLayout({
   title,
   description,
 }: GovernanceLayoutProps) {
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const { projectId: selectedProject, setProject: setSelectedProject } = useGovernanceProject();
 
   return (
     <Layout title={title} subtitle={description} subNav={<GovernanceSubNav />}>

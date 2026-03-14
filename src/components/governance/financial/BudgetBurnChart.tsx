@@ -37,7 +37,7 @@ export function BudgetBurnChart({ metrics, isLoading }: BudgetBurnChartProps) {
           <CardTitle className="text-sm font-medium">Budget Burn</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-40 bg-gray-100 animate-pulse rounded" />
+          <div className="h-40 bg-muted animate-pulse rounded" />
         </CardContent>
       </Card>
     );
@@ -61,16 +61,16 @@ export function BudgetBurnChart({ metrics, isLoading }: BudgetBurnChartProps) {
       <CardContent>
         {/* Budget Summary */}
         <div className="grid grid-cols-3 gap-2 mb-3">
-          <div className="text-center p-2 bg-gray-50 rounded">
-            <span className="text-xs text-gray-500 block">Total Budget</span>
+          <div className="text-center p-2 bg-muted rounded">
+            <span className="text-xs text-muted-foreground block">Total Budget</span>
             <span className="text-sm font-bold">${(totalBudget / 1000).toFixed(0)}k</span>
           </div>
           <div className="text-center p-2 bg-red-50 rounded">
-            <span className="text-xs text-gray-500 block">Spent</span>
+            <span className="text-xs text-muted-foreground block">Spent</span>
             <span className="text-sm font-bold text-red-600">${(totalSpent / 1000).toFixed(0)}k</span>
           </div>
           <div className="text-center p-2 bg-green-50 rounded">
-            <span className="text-xs text-gray-500 block">Remaining</span>
+            <span className="text-xs text-muted-foreground block">Remaining</span>
             <span className="text-sm font-bold text-green-600">${(remaining / 1000).toFixed(0)}k</span>
           </div>
         </div>
@@ -96,7 +96,7 @@ export function BudgetBurnChart({ metrics, isLoading }: BudgetBurnChartProps) {
         {/* Burn Rate */}
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Monthly Burn Rate</span>
+            <span className="text-muted-foreground">Monthly Burn Rate</span>
             <span className="font-medium">${(metrics?.budgetBurnRate ?? 0).toLocaleString()}</span>
           </div>
         </div>
