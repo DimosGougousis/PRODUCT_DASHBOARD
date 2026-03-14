@@ -24,7 +24,7 @@ export default function TeamHealthPage() {
             <CardTitle className="text-sm font-medium">Satisfaction</CardTitle>
             <div className={`flex items-center ${
               satisfactionTrend === 'up' ? 'text-green-600' : 
-              satisfactionTrend === 'down' ? 'text-red-600' : 'text-gray-600'
+              satisfactionTrend === 'down' ? 'text-red-600' : 'text-muted-foreground'
             }`}>
               {satisfactionTrend === 'up' ? <TrendingUp className="h-4 w-4" /> : 
                satisfactionTrend === 'down' ? <TrendingDown className="h-4 w-4" /> : 
@@ -116,7 +116,7 @@ export default function TeamHealthPage() {
             {metrics?.satisfaction.categories.map((category) => (
               <div key={category.name} className="flex items-center gap-4">
                 <div className="w-32 font-medium">{category.name}</div>
-                <div className="flex-1 bg-gray-100 rounded-full h-8 overflow-hidden">
+                <div className="flex-1 bg-muted rounded-full h-8 overflow-hidden">
                   <div
                     className={`h-full flex items-center justify-end px-2 text-white text-sm font-medium ${
                       category.score >= 8 ? 'bg-green-500' :
@@ -163,22 +163,22 @@ export default function TeamHealthPage() {
                         ? 'bg-green-500'
                         : item.status === 'in_progress'
                         ? 'bg-blue-500'
-                        : 'bg-gray-300'
+                        : 'bg-muted-foreground'
                     }`}
                   />
-                  <span className={item.status === 'completed' ? 'line-through text-gray-500' : ''}>
+                  <span className={item.status === 'completed' ? 'line-through text-muted-foreground' : ''}>
                     {item.text}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-500">Owner: {item.owner}</span>
+                  <span className="text-sm text-muted-foreground">Owner: {item.owner}</span>
                   <span
                     className={`px-2 py-1 rounded text-xs font-medium ${
                       item.status === 'completed'
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
                         : item.status === 'in_progress'
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                        : 'bg-muted text-muted-foreground'
                     }`}
                   >
                     {item.status.replace('_', ' ')}
@@ -194,7 +194,7 @@ export default function TeamHealthPage() {
                 <strong>Completion Rate:</strong>{' '}
                 {metrics?.retrospectives?.latest?.completionRate || 0}%
               </span>
-              <span className="text-gray-500">
+              <span className="text-muted-foreground">
                 {metrics?.retrospectives?.latest?.completedCount || 0} of{' '}
                 {metrics?.retrospectives?.latest?.totalCount || 0} items completed
               </span>
