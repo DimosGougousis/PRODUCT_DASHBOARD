@@ -115,7 +115,7 @@ export default function QualityMetricsPage() {
                 />
                 <span className="font-medium">Reliability</span>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {metrics?.reliabilityRating === 1 && 'A - No bugs'}
                 {metrics?.reliabilityRating === 2 && 'B - Minor issues'}
                 {metrics?.reliabilityRating === 3 && 'C - Moderate issues'}
@@ -137,7 +137,7 @@ export default function QualityMetricsPage() {
                 />
                 <span className="font-medium">Security</span>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {metrics?.securityRating === 1 && 'A - No vulnerabilities'}
                 {metrics?.securityRating === 2 && 'B - Minor vulnerabilities'}
                 {metrics?.securityRating === 3 && 'C - Moderate risk'}
@@ -159,7 +159,7 @@ export default function QualityMetricsPage() {
                 />
                 <span className="font-medium">Maintainability</span>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {metrics?.maintainabilityRating === 1 && 'A - Excellent'}
                 {metrics?.maintainabilityRating === 2 && 'B - Good'}
                 {metrics?.maintainabilityRating === 3 && 'C - Moderate'}
