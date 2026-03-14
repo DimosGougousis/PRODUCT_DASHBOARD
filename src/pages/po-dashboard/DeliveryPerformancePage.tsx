@@ -86,16 +86,27 @@ export default function DeliveryPerformancePage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <VelocityTrendChart data={metrics?.velocityTrend} isLoading={isLoading} />
+          <VelocityTrendChart data={metrics?.velocityTrend.sprints} isLoading={isLoading} />
         </div>
         <div>
-          <SprintGoalStatus sprint={metrics?.sprint} isLoading={isLoading} />
+          <SprintGoalStatus 
+            goal={metrics?.sprint.goal} 
+            progress={metrics?.sprint.progress.percentage || 0}
+            daysRemaining={metrics?.sprint.daysRemaining || 0}
+            isLoading={isLoading} 
+          />
         </div>
       </div>
 
       {/* Burndown Chart */}
       <div className="mt-6">
-        <SprintBurndownChart data={metrics?.burndown} isLoading={isLoading} />
+        <SprintBurndownChart 
+          sprintName={metrics?.sprint.sprintName || ''}
+          goal={metrics?.sprint.goal}
+          data={metrics?.burndown || []} 
+          totalPoints={metrics?.sprint.progress.total || 0}
+          isLoading={isLoading} 
+        />
       </div>
 
       {/* Historical Data Table */}

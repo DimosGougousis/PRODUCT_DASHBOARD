@@ -94,10 +94,10 @@ export default function CustomerMetricsPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
-          <NPSCsatTrendChart data={metrics} isLoading={isLoading} />
+          <NPSCsatTrendChart metrics={metrics} isLoading={isLoading} />
         </div>
         <div>
-          <SupportTicketVolume data={metrics?.supportTickets} isLoading={isLoading} />
+          <SupportTicketVolume metrics={metrics} isLoading={isLoading} />
         </div>
       </div>
 

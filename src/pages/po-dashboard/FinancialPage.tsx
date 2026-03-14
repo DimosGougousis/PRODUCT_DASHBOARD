@@ -94,10 +94,10 @@ export default function FinancialPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
-          <BudgetBurnChart data={metrics?.budget} isLoading={isLoading} />
+          <BudgetBurnChart metrics={metrics} isLoading={isLoading} />
         </div>
         <div>
-          <CostPerStoryPoint data={metrics?.costPerPoint} isLoading={isLoading} />
+          <CostPerStoryPoint metrics={metrics} isLoading={isLoading} />
         </div>
       </div>
 
